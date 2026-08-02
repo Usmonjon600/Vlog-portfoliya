@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zamonaviy Dasturiy Yechimlar</title>
+    <meta name="description" content="Biznesingiz uchun avtomatlashtirilgan zamonaviy dasturiy yechimlar va xizmatlar">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- LOADING SCREEN -->
+    <div class="loader" id="loader">
+        <div class="loader-logo neon-text">Loyiha</div>
+        <div class="loader-progress"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar glass-container">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo neon-text-sm">Loyiha</a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="#hero" class="nav-link" data-i18n="navHome" onclick="closeMobileMenu()">Bosh sahifa</a></li>
+                    <li><a href="#about" class="nav-link" data-i18n="navAbout" onclick="closeMobileMenu()">Men haqimda</a></li>
+                    <li><a href="#portfolio" class="nav-link" data-i18n="navServices" onclick="closeMobileMenu()">Xizmatlar</a></li>
+                    <li><a href="#contact" class="nav-link" data-i18n="navContact" onclick="closeMobileMenu()">Aloqa</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="btn btn-primary btn-nav" data-i18n="navCalcBtn" onclick="scrollToCalc()">Narx hisoblash</button>
+                    <button class="btn btn-secondary btn-nav" data-i18n="navDiscussBtn" onclick="openOrderModal()">Muhokama qilish</button>
+                </div>
+                
+                <div class="nav-controls">
+                    <div class="lang-switch">
+                        <button class="lang-btn" data-lang="en">EN</button>
+                        <button class="lang-btn active" data-lang="uz">UZ</button>
+                        <button class="lang-btn" data-lang="ru">RU</button>
+                    </div>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                        🌙
+                    </button>
+                </div>
+            </div>
+
+            <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero" id="hero">
+        <div class="hero-split-container container">
+            
+            <!-- LEFT SIDE -->
+            <div class="hero-left">
+                <div class="hero-greeting animate-fade-up">
+                    <span data-i18n="heroGreeting">Salom, men</span>
+                </div>
+                <h1 class="hero-title animate-fade-up" id="hero-name">Sodiqov Usmonjon</h1>
+                <div class="hero-roles animate-fade-up">
+                    <span class="typing-text" id="typing-text"></span><span class="typing-cursor">|</span>
+                </div>
+                <p class="hero-description animate-fade-up" data-i18n="heroDescription">
+                    Building modern web applications, AI-powered solutions, and enterprise software with clean architecture and exceptional user experiences.
+                </p>
+                <div class="hero-buttons animate-fade-up">
+                    <button class="btn btn-primary magnetic-btn" data-i18n="heroBtnProjects" onclick="scrollToPortfolio()">Loyihalarni ko'rish</button>
+                    <button class="btn btn-secondary magnetic-btn" data-i18n="heroBtnContact" onclick="scrollToContact()">Men bilan bog'laning</button>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="hero-right">
+                <div class="avatar-container">
+                    <div class="avatar-glow"></div>
+                    <!-- Using a modern generic developer illustration -->
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=usmonjon&backgroundColor=transparent" alt="Sodiqov Usmonjon" class="hero-avatar">
+                    
+                    <!-- Floating Tech Icons -->
+                    <div class="floating-icon icon-1">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+                    </div>
+                    <div class="floating-icon icon-2">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js">
+                    </div>
+                    <div class="floating-icon icon-3">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Background Orbs -->
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </header>
+
+    <!-- MEN HAQIMDA SECTION -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title" data-i18n="aboutTitle">Men haqimda</h2>
+            <div class="glass-container about-content">
+                <p data-i18n="aboutP1">Men korporativ darajadagi tizimlar, kengaytiriladigan veb-ilovalar va real biznes muammolarini hal qiluvchi AI-integratsiyalangan yechimlarni yaratishga ishtiyoqmand dasturiy muhandisman.</p>
+                <p data-i18n="aboutP2">Zenity Developer Team a'zosi sifatida men to'liq stek mahsulotlarni loyihalash va ishlab chiqaman — butun biznes operatsiyalarini boshqaradigan ERP tizimlaridan zamonaviy SaaS platformalargacha. Mening asosiy e'tiborim doimo toza arxitektura, ishlash samaradorligi va ajoyib foydalanuvchi tajribasiga qaratilgan.</p>
+                <p data-i18n="aboutP3">Men shunday dasturiy ta'minotga ishonamanki, u ko'rinmas bo'lishi kerak — ichida kuchli, foydalanish oson. Men yozgan har bir kod qatori talablarga javob berishdan ko'ra, haqiqiy qiymat berishga qaratilgan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO / XIZMATLAR SECTION -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2 class="section-title" data-i18n="servicesTitle">Bizning xizmatlar</h2>
+            <div class="grid" id="portfolio-grid">
+                <!-- JS orqali qo'shiladi -->
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERAKTIV KALKULYATOR -->
+    <section class="calculator-section" id="calculator">
+        <div class="container">
+            <h2 class="section-title" data-i18n="calcTitle">Loyiha narxini hisoblash</h2>
+            <div class="glass-container calc-container">
+                <form id="calc-form" class="calc-grid">
+                    <!-- JS orqali qo'shiladi -->
+                </form>
+                
+                <div class="calc-result">
+                    <div class="result-box">
+                        <h3 data-i18n="calcTotalText">Jami taxminiy narx:</h3>
+                        <p id="total-price" class="neon-text-sm">0 so'm</p>
+                    </div>
+                    <div class="result-box">
+                        <h3 data-i18n="calcDaysText">Taxminiy muddat:</h3>
+                        <p id="total-days">0 kun</p>
+                    </div>
+                </div>
+                
+                <div class="calc-action">
+                    <button class="btn btn-primary btn-large" data-i18n="calcOrderBtn" onclick="openOrderModal(true)">Ushbu loyihani buyurtma qilish</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALOQA VA LOKATSIYA -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contactTitle">Aloqa</h2>
+            
+            <div class="contact-split-container">
+                <!-- CHAP TOMON: Kontakt Kartochkalar -->
+                <div class="contact-info">
+                    <div class="contact-card glass-container magnetic-element">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h4 data-i18n="contactEmailLabel">Email</h4>
+                            <a href="mailto:usmonjonsadikov9@gmail.com">usmonjonsadikov9@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card glass-container magnetic-element">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-details">
+                            <h4 data-i18n="contactTelegramLabel">Telegram</h4>
+                            <a href="https://t.me/Usmonjon_2013">@Usmonjon_2013</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card glass-container magnetic-element">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h4 data-i18n="contactPhoneLabel">Telefon</h4>
+                            <a href="tel:+998979370123">+998 97 937 01 23</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- O'NG TOMON: Xabar yuborish formasi -->
+                <div class="contact-form-container glass-container">
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="contactName" data-i18n="contactNameLabel">Ismingiz</label>
+                                <input type="text" id="contactName" data-i18n-placeholder="contactNamePlaceholder" placeholder="Ismingiz" required>
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="contactEmail" data-i18n="contactEmailFormLabel">Email</label>
+                                <input type="email" id="contactEmail" data-i18n-placeholder="contactEmailPlaceholder" placeholder="Email manzilingiz" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject" data-i18n="contactSubjectLabel">Mavzu</label>
+                            <input type="text" id="contactSubject" data-i18n-placeholder="contactSubjectPlaceholder" placeholder="Xabar mavzusi" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage" data-i18n="contactMessageLabel">Xabaringiz</label>
+                            <textarea id="contactMessage" data-i18n-placeholder="contactMessagePlaceholder" placeholder="Xabaringizni yozing..." rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary magnetic-btn w-100" id="contact-submit-btn" data-i18n="contactSubmitBtn">Xabarni yuborish</button>
+                        <div id="contact-success-msg" class="success-message" style="display: none; margin-top: 15px;">
+                            <p class="neon-text-sm" style="text-align: center; margin: 0;" data-i18n="contactSuccessMsg">Xabar muvaffaqiyatli yuborildi! 🎉</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK ORDER MODAL -->
+    <div class="modal-overlay" id="order-modal">
+        <div class="modal glass-container">
+            <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+            <h2 class="neon-text-sm" data-i18n="modalOrderTitle">Buyurtma berish</h2>
+            <p data-i18n="modalOrderDesc">Ma'lumotlaringizni qoldiring, biz siz bilan tez orada bog'lanamiz.</p>
+            
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="userName" data-i18n="modalNameLabel">Ismingiz *</label>
+                    <input type="text" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userContact" data-i18n="modalContactLabel">Telefon yoki Telegram username *</label>
+                    <input type="text" id="userContact" required>
+                </div>
+                
+                <div id="modal-calc-info" class="modal-calc-info" style="display: none;">
+                    <p><strong data-i18n="modalPriceLabel">Kutilayotgan narx:</strong> <span id="modal-price-display"></span></p>
+                    <p><strong data-i18n="modalServicesLabel">Xizmatlar:</strong> <span id="modal-services-display"></span></p>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="submit-btn" data-i18n="modalSubmitBtn">Jo'natish</button>
+            </form>
+            
+            <div id="success-message" class="success-message" style="display: none;">
+                <h3 class="neon-text-sm" data-i18n="modalSuccessTitle">Rahmat! 🎉</h3>
+                <p data-i18n="modalSuccessDesc">Sizning so'rovingiz qabul qilindi. Tez orada siz bilan bog'lanamiz.</p>
+                <button class="btn btn-secondary w-100" data-i18n="modalCloseBtn" onclick="closeOrderModal()">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- XIZMAT BATAFSIL MODALI -->
+    <div class="modal-overlay" id="details-modal">
+        <div class="modal glass-container">
+            <button class="close-btn" onclick="closeDetailsModal()">&times;</button>
+            <h2 id="details-title" class="neon-text-sm"></h2>
+            <p id="details-desc"></p>
+            <ul id="details-features" class="features-list"></ul>
+            <p class="details-price"><strong data-i18n="detailsPriceLabel">Narxi:</strong> <span id="details-price"></span></p>
+            <button class="btn btn-primary w-100 mt-4" data-i18n="detailsCalcBtn" onclick="closeDetailsModal(); scrollToCalc();">Hisoblashga o'tish</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

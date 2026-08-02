@@ -1,0 +1,170 @@
+{
+  "uz": {
+    "hero": {
+      "title": "Biznesingiz uchun avtomatlashtirilgan zamonaviy dasturiy yechimlar va xizmatlar",
+      "description": "Bizning xizmatlarimiz orqali jarayonlarni avtomatlashtiring, mijozlar oqimini oshiring va raqamli dunyoda o'z o'rningizga ega bo'ling. Futuristik va sifatli dasturlar faqat siz uchun."
+    },
+    "portfolio": [
+      {
+        "id": "telegram-bot",
+        "title": "Telegram Bot",
+        "description": "Mijozlar bilan ishlash, buyurtmalarni qabul qilish va avtomatlashtirilgan tizimlar uchun kuchli botlar.",
+        "features": [
+          "24/7 Avtomatlashtirilgan javoblar",
+          "Buyurtma qabul qilish va to'lov tizimlari",
+          "Foydalanuvchilar bazasini yig'ish",
+          "Maxsus Admin panel orqali boshqaruv"
+        ],
+        "priceEstimate": "1,500,000 - 5,000,000 so'm",
+        "btnLabel": "Batafsil ko'rish"
+      },
+      {
+        "id": "landing-page",
+        "title": "Landing Page (Veb-sayt)",
+        "description": "Maxsulot yoki xizmatingizni sotish uchun konversiyasi yuqori bo'lgan bir sahifali veb-saytlar.",
+        "features": [
+          "Zamonaviy va yorqin dizayn",
+          "Mobil qurilmalar uchun moslashuvchanlik",
+          "SEO optimizatsiya",
+          "CRM bilan integratsiya"
+        ],
+        "priceEstimate": "2,000,000 - 4,000,000 so'm",
+        "btnLabel": "Batafsil ko'rish"
+      },
+      {
+        "id": "mobile-app",
+        "title": "Mobil Ilova",
+        "description": "Biznesingizni keyingi bosqichga olib chiquvchi Android va iOS dasturlar.",
+        "features": [
+          "Android (APK) va iOS (App Store) versiyalari",
+          "Push bildirishnomalar",
+          "Foydalanuvchi qulayligi (UI/UX)",
+          "Yuqori tezlik va xavfsizlik"
+        ],
+        "priceEstimate": "8,000,000 - 20,000,000 so'm",
+        "btnLabel": "Batafsil ko'rish"
+      }
+    ],
+    "calculator": {
+      "services": [
+        { "id": "calc-tg-bot", "label": "Telegram bot yaratish", "price": 2000000, "days": 5 },
+        { "id": "calc-admin", "label": "Boshqaruv paneli (Admin panel)", "price": 1500000, "days": 4 },
+        { "id": "calc-mobile", "label": "Mobil versiya (APK)", "price": 5000000, "days": 14 },
+        { "id": "calc-db", "label": "Ma'lumotlar bazasini ulash", "price": 1000000, "days": 2 },
+        { "id": "calc-payment", "label": "To'lov tizimi integratsiyasi (Click, Payme)", "price": 1500000, "days": 3 }
+      ]
+    }
+  },
+  "en": {
+    "hero": {
+      "title": "Automated modern software solutions and services for your business",
+      "description": "Automate your processes, increase customer flow, and secure your place in the digital world with our services. Futuristic and high-quality software built just for you."
+    },
+    "portfolio": [
+      {
+        "id": "telegram-bot",
+        "title": "Telegram Bot",
+        "description": "Powerful bots for customer interaction, order processing, and automated systems.",
+        "features": [
+          "24/7 Automated responses",
+          "Order processing & payment systems",
+          "User database collection",
+          "Custom Admin panel for management"
+        ],
+        "priceEstimate": "1,500,000 - 5,000,000 UZS",
+        "btnLabel": "View Details"
+      },
+      {
+        "id": "landing-page",
+        "title": "Landing Page (Website)",
+        "description": "High-converting single-page websites to sell your product or service.",
+        "features": [
+          "Modern and bright design",
+          "Responsive for mobile devices",
+          "SEO optimization",
+          "CRM integration"
+        ],
+        "priceEstimate": "2,000,000 - 4,000,000 UZS",
+        "btnLabel": "View Details"
+      },
+      {
+        "id": "mobile-app",
+        "title": "Mobile Application",
+        "description": "Android and iOS applications that take your business to the next level.",
+        "features": [
+          "Android (APK) and iOS (App Store) versions",
+          "Push notifications",
+          "User-friendly UI/UX",
+          "High speed and security"
+        ],
+        "priceEstimate": "8,000,000 - 20,000,000 UZS",
+        "btnLabel": "View Details"
+      }
+    ],
+    "calculator": {
+      "services": [
+        { "id": "calc-tg-bot", "label": "Create Telegram bot", "price": 2000000, "days": 5 },
+        { "id": "calc-admin", "label": "Admin Dashboard", "price": 1500000, "days": 4 },
+        { "id": "calc-mobile", "label": "Mobile version (APK)", "price": 5000000, "days": 14 },
+        { "id": "calc-db", "label": "Database integration", "price": 1000000, "days": 2 },
+        { "id": "calc-payment", "label": "Payment system integration (Click, Payme)", "price": 1500000, "days": 3 }
+      ]
+    }
+  },
+  "ru": {
+    "hero": {
+      "title": "Автоматизированные современные программные решения для вашего бизнеса",
+      "description": "Автоматизируйте свои процессы, увеличьте поток клиентов и займите свое место в цифровом мире с нашими услугами. Футуристическое и качественное программное обеспечение для вас."
+    },
+    "portfolio": [
+      {
+        "id": "telegram-bot",
+        "title": "Telegram Бот",
+        "description": "Мощные боты для взаимодействия с клиентами, приема заказов и автоматизированных систем.",
+        "features": [
+          "Автоматизированные ответы 24/7",
+          "Системы приема заказов и оплаты",
+          "Сбор базы пользователей",
+          "Пользовательская панель администратора"
+        ],
+        "priceEstimate": "1 500 000 - 5 000 000 UZS",
+        "btnLabel": "Подробнее"
+      },
+      {
+        "id": "landing-page",
+        "title": "Landing Page (Веб-сайт)",
+        "description": "Одностраничные сайты с высокой конверсией для продажи вашего продукта или услуги.",
+        "features": [
+          "Современный и яркий дизайн",
+          "Адаптивность для мобильных устройств",
+          "SEO оптимизация",
+          "Интеграция с CRM"
+        ],
+        "priceEstimate": "2 000 000 - 4 000 000 UZS",
+        "btnLabel": "Подробнее"
+      },
+      {
+        "id": "mobile-app",
+        "title": "Мобильное приложение",
+        "description": "Приложения для Android и iOS, которые выводят ваш бизнес на новый уровень.",
+        "features": [
+          "Версии для Android (APK) и iOS (App Store)",
+          "Push-уведомления",
+          "Удобный интерфейс (UI/UX)",
+          "Высокая скорость и безопасность"
+        ],
+        "priceEstimate": "8 000 000 - 20 000 000 UZS",
+        "btnLabel": "Подробнее"
+      }
+    ],
+    "calculator": {
+      "services": [
+        { "id": "calc-tg-bot", "label": "Создание Telegram бота", "price": 2000000, "days": 5 },
+        { "id": "calc-admin", "label": "Панель управления (Admin panel)", "price": 1500000, "days": 4 },
+        { "id": "calc-mobile", "label": "Мобильная версия (APK)", "price": 5000000, "days": 14 },
+        { "id": "calc-db", "label": "Подключение базы данных", "price": 1000000, "days": 2 },
+        { "id": "calc-payment", "label": "Интеграция платежных систем", "price": 1500000, "days": 3 }
+      ]
+    }
+  }
+}

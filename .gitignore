@@ -1,0 +1,15 @@
+node_modules/
+.env
+.vercel/
+cloudflared.exe
+cf.txt
+cf_js.txt
+cf_npm.txt
+lhr.js
+lhr_out.txt
+pinggy_url.txt
+telebit.txt
+tunnel.js
+tunnel.log
+tunnel.txt
+url.txt
