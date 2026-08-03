@@ -10,28 +10,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         await initDashboard();
     }
 
-    // Login logic - On-Screen Numpad
+    // Login logic - On-Screen Numpad & Physical Keyboard
     const numBtns = document.querySelectorAll('.num-btn[data-val]');
     const backspaceBtn = document.getElementById('btn-backspace');
     const dots = document.querySelectorAll('.dot');
     let currentPin = '';
 
-    numBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentPin.length < 4) {
-                currentPin += btn.dataset.val;
-                updateDots();
-                if (currentPin.length === 4) {
-                    submitPin();
-                }
+    function handleInput(val) {
+        if (currentPin.length < 4) {
+            currentPin += val;
+            updateDots();
+            
+            // Visual feedback for button
+            const btn = Array.from(numBtns).find(b => b.dataset.val === val);
+            if(btn) {
+                btn.style.background = '#374151';
+                setTimeout(() => btn.style.background = '', 150);
             }
-        });
-    });
 
-    backspaceBtn.addEventListener('click', () => {
+            if (currentPin.length === 4) {
+                submitPin();
+            }
+        }
+    }
+
+    function handleBackspace() {
         if (currentPin.length > 0) {
             currentPin = currentPin.slice(0, -1);
             updateDots();
+            
+            backspaceBtn.style.background = '#374151';
+            setTimeout(() => backspaceBtn.style.background = '', 150);
+        }
+    }
+
+    // Mouse Clicks
+    numBtns.forEach(btn => {
+        btn.addEventListener('click', () => handleInput(btn.dataset.val));
+    });
+
+    backspaceBtn.addEventListener('click', handleBackspace);
+
+    // Physical Keyboard
+    document.addEventListener('keydown', (e) => {
+        if (/^[0-9]$/.test(e.key)) {
+            handleInput(e.key);
+        } else if (e.key === 'Backspace') {
+            handleBackspace();
         }
     });
 

@@ -1,6 +1,6 @@
 const https = require('https');
 
-const data = JSON.stringify({ password: '12345' });
+const data = JSON.stringify({ password: '0123' });
 
 const options = {
   hostname: 'vlog-portfoliya-wv41.vercel.app',
