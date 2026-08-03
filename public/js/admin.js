@@ -10,41 +10,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         await initDashboard();
     }
 
-    // Login logic - PIN
-    const pinBoxes = document.querySelectorAll('.pin-box');
-    
-    pinBoxes.forEach((box, index) => {
-        box.addEventListener('input', (e) => {
-            const val = e.target.value;
-            // Faqat raqamlar
-            if (!/^[0-9]*$/.test(val)) {
-                e.target.value = val.replace(/[^0-9]/g, '');
-                return;
-            }
-            if (val.length === 1) {
-                e.target.classList.remove('error');
-                if (index < pinBoxes.length - 1) {
-                    pinBoxes[index + 1].focus();
-                } else {
+    // Login logic - On-Screen Numpad
+    const numBtns = document.querySelectorAll('.num-btn[data-val]');
+    const backspaceBtn = document.getElementById('btn-backspace');
+    const dots = document.querySelectorAll('.dot');
+    let currentPin = '';
+
+    numBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentPin.length < 5) {
+                currentPin += btn.dataset.val;
+                updateDots();
+                if (currentPin.length === 5) {
                     submitPin();
                 }
             }
         });
-        
-        box.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-                pinBoxes[index - 1].focus();
-                pinBoxes[index - 1].value = '';
-            }
-        });
     });
 
+    backspaceBtn.addEventListener('click', () => {
+        if (currentPin.length > 0) {
+            currentPin = currentPin.slice(0, -1);
+            updateDots();
+        }
+    });
+
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            if (index < currentPin.length) {
+                dot.classList.add('filled');
+            } else {
+                dot.classList.remove('filled');
+                dot.classList.remove('error');
+            }
+        });
+    }
+
     async function submitPin() {
-        let password = '';
-        pinBoxes.forEach(box => password += box.value);
-        if(password.length !== 5) return;
+        const password = currentPin;
         
-        pinBoxes.forEach(box => box.disabled = true);
+        // Disable buttons
+        document.querySelectorAll('.num-btn').forEach(b => b.style.pointerEvents = 'none');
+        
         try {
             const res = await fetch('/api/login', {
                 method: 'POST',
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch(e) {
             showPinError();
         } finally {
-            pinBoxes.forEach(box => box.disabled = false);
+            document.querySelectorAll('.num-btn').forEach(b => b.style.pointerEvents = 'auto');
         }
     }
 
@@ -71,19 +78,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.querySelector('.login-card');
         const errorMsg = document.getElementById('login-error');
         
-        pinBoxes.forEach(box => {
-            box.classList.add('error');
-            box.value = '';
+        dots.forEach(dot => {
+            dot.classList.add('error');
         });
         errorMsg.classList.add('show');
         card.classList.add('shake');
         
         setTimeout(() => card.classList.remove('shake'), 500);
-        setTimeout(() => pinBoxes[0].focus(), 100);
+        
         setTimeout(() => {
+            currentPin = '';
+            updateDots();
             errorMsg.classList.remove('show');
-            pinBoxes.forEach(box => box.classList.remove('error'));
-        }, 3000);
+        }, 1500);
     }
 
     // Logout

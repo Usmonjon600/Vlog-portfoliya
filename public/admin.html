@@ -10,20 +10,45 @@
 </head>
 <body>
     <!-- LOGIN EKRANI -->
-    <div id="login-screen" class="admin-container center-content light-glass-theme">
-        <div class="glass-card login-card crm-style">
-            <h2 class="crm-title">Xush kelibsiz</h2>
-            <p class="crm-subtitle">Boshqaruv paneliga kirish uchun PIN-kodni kiriting</p>
+    <div id="login-screen" class="admin-container center-content delta-theme">
+        <div class="glass-card login-card delta-card">
+            <div class="brand-logo">
+                <div class="logo-circle"></div>
+                <h2 class="crm-title">Boshqaruv Paneli</h2>
+            </div>
+            <p class="crm-subtitle">Tizimga kirish uchun PIN-kodni bosing</p>
             
-            <div class="pin-container" id="pin-container">
-                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
-                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
-                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
-                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
-                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            <!-- Dots Indicator -->
+            <div class="pin-dots" id="pin-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
 
             <p id="login-error" class="error-msg">Noto'g'ri PIN-kod!</p>
+
+            <!-- Numeric Keypad -->
+            <div class="numpad">
+                <button class="num-btn" data-val="1">1</button>
+                <button class="num-btn" data-val="2">2</button>
+                <button class="num-btn" data-val="3">3</button>
+                
+                <button class="num-btn" data-val="4">4</button>
+                <button class="num-btn" data-val="5">5</button>
+                <button class="num-btn" data-val="6">6</button>
+                
+                <button class="num-btn" data-val="7">7</button>
+                <button class="num-btn" data-val="8">8</button>
+                <button class="num-btn" data-val="9">9</button>
+                
+                <button class="num-btn empty" disabled></button>
+                <button class="num-btn" data-val="0">0</button>
+                <button class="num-btn action-btn-pad" id="btn-backspace">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
+                </button>
+            </div>
         </div>
     </div>
 
