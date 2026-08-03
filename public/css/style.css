@@ -518,33 +518,28 @@ h1, h2, h3, h4 {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 50px;
 }
 
 .project-card {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transition: transform var(--transition-fast);
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
+    /* Inherits main styles from .card and .glass-container */
+    height: 100%;
 }
 
 .project-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-color);
+    margin-bottom: 15px;
 }
 
 .project-desc {
     color: var(--text-muted);
     line-height: 1.6;
     flex-grow: 1;
+    margin-bottom: 20px;
 }
 
 .project-tags {

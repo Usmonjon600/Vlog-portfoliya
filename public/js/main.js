@@ -863,19 +863,23 @@ async function loadProjectsFromDB() {
             const tagsHtml = p.tags.split(',').map(tag => `<span class="badge">${tag.trim()}</span>`).join('');
             
             const card = document.createElement('div');
-            card.className = 'glass-card project-card';
+            card.className = 'card glass-container project-card tilt-card';
             
             card.innerHTML = `
-                <h3 class="project-title dynamic-text" data-uz="${p.title_uz}" data-en="${p.title_en}" data-ru="${p.title_ru}">
-                    ${p[`title_${currentLang}`] || p.title_uz}
-                </h3>
-                <p class="project-desc dynamic-text" data-uz="${p.desc_uz}" data-en="${p.desc_en}" data-ru="${p.desc_ru}">
-                    ${p[`desc_${currentLang}`] || p.desc_uz}
-                </p>
-                <div class="project-tags">
-                    ${tagsHtml}
+                <div class="tilt-card-content" style="display: flex; flex-direction: column; height: 100%;">
+                    <h3 class="project-title dynamic-text" data-uz="${p.title_uz}" data-en="${p.title_en}" data-ru="${p.title_ru}">
+                        ${p[`title_${currentLang}`] || p.title_uz}
+                    </h3>
+                    <p class="project-desc dynamic-text" data-uz="${p.desc_uz}" data-en="${p.desc_en}" data-ru="${p.desc_ru}">
+                        ${p[`desc_${currentLang}`] || p.desc_uz}
+                    </p>
+                    <div class="project-tags">
+                        ${tagsHtml}
+                    </div>
+                    <div class="card-actions" style="margin-top: auto;">
+                        ${p.demo_url ? `<a href="${p.demo_url}" target="_blank" class="btn btn-outline magnetic-btn" data-i18n="btnDemo" style="width: 100%; text-align: center; display: block;">${staticTranslations[currentLang].btnDemo}</a>` : `<button class="btn btn-outline magnetic-btn" data-i18n="btnDemo" style="width: 100%;">${staticTranslations[currentLang].btnDemo}</button>`}
+                    </div>
                 </div>
-                ${p.demo_url ? `<a href="${p.demo_url}" target="_blank" class="btn btn-outline" data-i18n="btnDemo">${staticTranslations[currentLang].btnDemo}</a>` : `<button class="btn btn-outline" data-i18n="btnDemo">${staticTranslations[currentLang].btnDemo}</button>`}
             `;
             grid.appendChild(card);
         });
