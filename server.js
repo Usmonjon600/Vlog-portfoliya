@@ -26,10 +26,11 @@ app.get('/admin', (req, res) => {
 });
 
 
-// Admin kirish qismi
+// Login endpoint
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
-    if (password === process.env.ADMIN_PASSWORD) {
+    // Parolni tekshirish (Vercel env yoki 0123)
+    if (password === process.env.ADMIN_PASSWORD || password === '0123') {
         res.json({ success: true, token: 'admin-token-12345' });
     } else {
         res.json({ success: false });

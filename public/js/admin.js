@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     numBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            if (currentPin.length < 5) {
+            if (currentPin.length < 4) {
                 currentPin += btn.dataset.val;
                 updateDots();
-                if (currentPin.length === 5) {
+                if (currentPin.length === 4) {
                     submitPin();
                 }
             }
