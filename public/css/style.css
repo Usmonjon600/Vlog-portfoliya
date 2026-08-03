@@ -509,6 +509,66 @@ h1, h2, h3, h4 {
     right: -150px;
 }
 
+/* === PROJECTS SECTION === */
+.projects-section {
+    padding: 100px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.project-card {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform var(--transition-fast);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.project-desc {
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.project-tags .badge {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--neon-cyan);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+[data-theme="dark"] .project-tags .badge {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+}
+
 /* === PORTFOLIO SECTION === */
 .portfolio {
     padding: 100px 0;
