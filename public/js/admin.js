@@ -1,7 +1,7 @@
 let supabase = null;
 let editingProjectId = null;
 
-document.addEventListener('DOMContentLoaded', async () => {
+(async () => {
     // Bind all PIN login event listeners FIRST before any await calls that might crash
     const numBtns = document.querySelectorAll('.num-btn[data-val]');
     const backspaceBtn = document.getElementById('btn-backspace');
@@ -31,17 +31,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             currentPin = currentPin.slice(0, -1);
             updateDots();
             
-            backspaceBtn.style.background = '#374151';
-            setTimeout(() => backspaceBtn.style.background = '', 150);
+            if (backspaceBtn) {
+                backspaceBtn.style.background = '#374151';
+                setTimeout(() => backspaceBtn.style.background = '', 150);
+            }
         }
     }
 
     // Mouse Clicks
-    numBtns.forEach(btn => {
-        btn.addEventListener('click', () => handleInput(btn.dataset.val));
-    });
+    if (numBtns.length > 0) {
+        numBtns.forEach(btn => {
+            btn.addEventListener('click', () => handleInput(btn.dataset.val));
+        });
+    }
 
-    backspaceBtn.addEventListener('click', handleBackspace);
+    if (backspaceBtn) {
+        backspaceBtn.addEventListener('click', handleBackspace);
+    }
 
     // Physical Keyboard
     document.addEventListener('keydown', (e) => {
@@ -53,14 +59,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     function updateDots() {
-        dots.forEach((dot, index) => {
-            if (index < currentPin.length) {
-                dot.classList.add('filled');
-            } else {
-                dot.classList.remove('filled');
-                dot.classList.remove('error');
-            }
-        });
+        if (dots.length > 0) {
+            dots.forEach((dot, index) => {
+                if (index < currentPin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                    dot.classList.remove('error');
+                }
+            });
+        }
     }
 
     // Check Auth AFTER binding listeners
@@ -138,9 +146,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Logout
-    document.getElementById('logout-btn').addEventListener('click', () => {
+    document.getElementById('logout-btn').addEventListener('click', function logout() {
         localStorage.removeItem('adminToken');
-        location.reload();
+        window.location.reload();
     });
 
     // Tabs
@@ -164,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.getElementById('save-project-btn').addEventListener('click', saveProject);
-});
+})();
 
 async function initDashboard() {
     document.getElementById('dashboard-screen').style.display = 'block';
