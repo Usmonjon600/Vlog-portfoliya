@@ -742,7 +742,7 @@ function attachInteractionEffects() {
     attachCursorHoverEffects();
 }
 
-function initGSAPAnimations() {
+async function initGSAPAnimations() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     
@@ -839,7 +839,6 @@ function initGSAPAnimations() {
         { scrollTrigger: { trigger: ".contact-section", start: "top 80%" }, x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
     );
     
-    attachInteractionEffects();
     attachInteractionEffects();
     
     // DB dan loyihalarni yuklash
