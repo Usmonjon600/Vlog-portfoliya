@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,
   "builds": [
     {
       "src": "server.js",
@@ -18,7 +17,7 @@
     },
     {
       "src": "/admin",
-      "dest": "/public/admin.html"
+      "dest": "/server.js"
     },
     {
       "src": "/(.*)",

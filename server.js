@@ -21,6 +21,11 @@ app.get('/api/config', (req, res) => {
     });
 });
 
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+
 // Admin kirish qismi
 app.post('/api/login', (req, res) => {
     const { password } = req.body;
