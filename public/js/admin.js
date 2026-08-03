@@ -2,15 +2,7 @@ let supabase = null;
 let editingProjectId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Check Auth
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-        document.getElementById('login-screen').style.display = 'flex';
-    } else {
-        await initDashboard();
-    }
-
-    // Login logic - On-Screen Numpad & Physical Keyboard
+    // Bind all PIN login event listeners FIRST before any await calls that might crash
     const numBtns = document.querySelectorAll('.num-btn[data-val]');
     const backspaceBtn = document.getElementById('btn-backspace');
     const dots = document.querySelectorAll('.dot');
@@ -69,6 +61,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dot.classList.remove('error');
             }
         });
+    }
+
+    // Check Auth AFTER binding listeners
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+        document.getElementById('login-screen').style.display = 'flex';
+    } else {
+        try {
+            document.getElementById('login-screen').style.display = 'none';
+            await initDashboard();
+        } catch (err) {
+            console.error("Dashboard init error:", err);
+            localStorage.removeItem('adminToken');
+            document.getElementById('login-screen').style.display = 'flex';
+        }
     }
 
     async function submitPin() {
