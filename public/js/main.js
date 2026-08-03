@@ -221,18 +221,23 @@ function updateLanguage(lang) {
     localStorage.setItem('lang', lang);
     
     const texts = staticTranslations[lang];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (texts[key]) {
-            el.innerText = texts[key];
-        }
-    });
+    if (texts) {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (texts[key]) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = texts[key];
+                } else {
+                    el.innerText = texts[key];
+                }
+            }
+        });
+    }
 
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (texts[key]) {
-            el.setAttribute('placeholder', texts[key]);
-        }
+    // Supabase dan kelgan dinamik elementlar uchun (projects)
+    document.querySelectorAll('.dynamic-text').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (text) el.innerText = text;
     });
 
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -835,6 +840,57 @@ function initGSAPAnimations() {
     );
     
     attachInteractionEffects();
+    attachInteractionEffects();
+    
+    // DB dan loyihalarni yuklash
+    await loadProjectsFromDB();
+}
+
+async function loadProjectsFromDB() {
+    try {
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+        
+        const { data, error } = await supabase.from('projects').select('*').order('id', { ascending: false });
+        if (error) throw error;
+
+        const grid = document.getElementById('projects-grid');
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+
+        data.forEach(p => {
+            const tagsHtml = p.tags.split(',').map(tag => `<span class="badge">${tag.trim()}</span>`).join('');
+            
+            const card = document.createElement('div');
+            card.className = 'glass-card project-card';
+            
+            card.innerHTML = `
+                <h3 class="project-title dynamic-text" data-uz="${p.title_uz}" data-en="${p.title_en}" data-ru="${p.title_ru}">
+                    ${p[`title_${currentLang}`] || p.title_uz}
+                </h3>
+                <p class="project-desc dynamic-text" data-uz="${p.desc_uz}" data-en="${p.desc_en}" data-ru="${p.desc_ru}">
+                    ${p[`desc_${currentLang}`] || p.desc_uz}
+                </p>
+                <div class="project-tags">
+                    ${tagsHtml}
+                </div>
+                ${p.demo_url ? `<a href="${p.demo_url}" target="_blank" class="btn btn-outline" data-i18n="btnDemo">${staticTranslations[currentLang].btnDemo}</a>` : `<button class="btn btn-outline" data-i18n="btnDemo">${staticTranslations[currentLang].btnDemo}</button>`}
+            `;
+            grid.appendChild(card);
+        });
+        
+        if (window.gsap && window.ScrollTrigger) {
+            gsap.fromTo(".project-card", 
+                { y: 60, opacity: 0, scale: 0.95 },
+                { scrollTrigger: { trigger: ".projects-section", start: "top 75%" }, y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+            );
+        }
+
+    } catch (e) {
+        console.error("Loyihalarni yuklashda xatolik:", e);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initApp);

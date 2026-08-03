@@ -13,6 +13,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Ma'lumotlar bazasi konfiguratsiyasi frontend uchun
+app.get('/api/config', (req, res) => {
+    res.json({
+        supabaseUrl: process.env.SUPABASE_URL,
+        supabaseKey: process.env.SUPABASE_KEY
+    });
+});
+
+// Admin kirish qismi
+app.post('/api/login', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.ADMIN_PASSWORD) {
+        res.json({ success: true, token: 'admin-token-12345' });
+    } else {
+        res.json({ success: false });
+    }
+});
+
 // Telegram ga yuborish funksiyasi
 async function sendToTelegram(message) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -121,6 +139,10 @@ ${message}
 // Agar ko'p sahifali (SPA) bo'lsa, wildcard o'rniga barcha route-lar uchun `/*` ishlatish mumkin.
 // Lekin hozir static fayllar (index.html) express.static orqali o'zi xizmat qilinadi.
 // Shuning uchun bu catch-all qismi shart emas, yoki '/(.*)' deb yozish mumkin.
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

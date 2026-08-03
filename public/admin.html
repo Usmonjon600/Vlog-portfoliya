@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Loyiha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <!-- Umumiy dizayn -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- LOGIN EKRANI -->
+    <div id="login-screen" class="admin-container center-content">
+        <div class="glass-card login-card">
+            <h2 class="neon-text-sm">Admin Panel</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">Tizimga kirish uchun parolni kiriting</p>
+            <input type="password" id="admin-password" class="glass-input" placeholder="Parol">
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Kirish</button>
+            <p id="login-error" style="color: #ef4444; margin-top: 10px; display: none;">Notog'ri parol!</p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD EKRANI -->
+    <div id="dashboard-screen" class="admin-container" style="display: none;">
+        <nav class="admin-nav glass-container">
+            <h2 class="neon-text-sm">Boshqaruv Paneli</h2>
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-target="projects-tab">Natijalar (Loyihalar)</button>
+                <button class="tab-btn" data-target="services-tab">Xizmatlar</button>
+                <button id="logout-btn" class="btn btn-outline" style="padding: 5px 15px;">Chiqish</button>
+            </div>
+        </nav>
+
+        <main class="admin-main">
+            <!-- PROJECTS TAB -->
+            <div id="projects-tab" class="tab-content active">
+                <div class="tab-header">
+                    <h3>Loyihalar Ro'yxati</h3>
+                    <button class="btn btn-primary" id="add-project-btn">+ Yangi Qo'shish</button>
+                </div>
+                <div class="glass-card">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Loyiha nomi (UZ)</th>
+                                <th>Texnologiyalar</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projects-tbody">
+                            <!-- JS orqali to'ldiriladi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SERVICES TAB -->
+            <div id="services-tab" class="tab-content" style="display: none;">
+                <div class="tab-header">
+                    <h3>Xizmatlar Ro'yxati</h3>
+                    <button class="btn btn-primary" id="add-service-btn">+ Yangi Qo'shish</button>
+                </div>
+                <div class="glass-card" style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Xizmat nomi (UZ)</th>
+                                <th>Narxi (UZ)</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-tbody">
+                            <!-- JS orqali to'ldiriladi -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PROJECT MODAL -->
+    <div id="project-modal" class="modal-overlay" style="display: none;">
+        <div class="glass-card modal-content admin-modal">
+            <h3 id="project-modal-title">Loyiha qo'shish</h3>
+            <div class="form-grid">
+                <!-- UZ -->
+                <div class="form-group">
+                    <label>Nom (UZ)</label>
+                    <input type="text" id="p_title_uz" class="glass-input">
+                </div>
+                <div class="form-group">
+                    <label>Tavsif (UZ)</label>
+                    <textarea id="p_desc_uz" class="glass-input"></textarea>
+                </div>
+                <!-- EN -->
+                <div class="form-group">
+                    <label>Nom (EN)</label>
+                    <input type="text" id="p_title_en" class="glass-input">
+                </div>
+                <div class="form-group">
+                    <label>Tavsif (EN)</label>
+                    <textarea id="p_desc_en" class="glass-input"></textarea>
+                </div>
+                <!-- RU -->
+                <div class="form-group">
+                    <label>Nom (RU)</label>
+                    <input type="text" id="p_title_ru" class="glass-input">
+                </div>
+                <div class="form-group">
+                    <label>Tavsif (RU)</label>
+                    <textarea id="p_desc_ru" class="glass-input"></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Texnologiyalar (vergul bilan ajrating)</label>
+                    <input type="text" id="p_tags" class="glass-input">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="document.getElementById('project-modal').style.display='none'">Bekor qilish</button>
+                <button class="btn btn-primary" id="save-project-btn">Saqlash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
