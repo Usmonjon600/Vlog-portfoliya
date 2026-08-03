@@ -22,6 +22,7 @@ app.get('/api/config', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
