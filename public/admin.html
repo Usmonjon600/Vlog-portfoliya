@@ -10,13 +10,20 @@
 </head>
 <body>
     <!-- LOGIN EKRANI -->
-    <div id="login-screen" class="admin-container center-content">
-        <div class="glass-card login-card">
-            <h2 class="neon-text-sm">Admin Panel</h2>
-            <p style="margin-bottom: 20px; color: var(--text-muted);">Tizimga kirish uchun parolni kiriting</p>
-            <input type="password" id="admin-password" class="glass-input" placeholder="Parol">
-            <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Kirish</button>
-            <p id="login-error" style="color: #ef4444; margin-top: 10px; display: none;">Notog'ri parol!</p>
+    <div id="login-screen" class="admin-container center-content light-glass-theme">
+        <div class="glass-card login-card crm-style">
+            <h2 class="crm-title">Xush kelibsiz</h2>
+            <p class="crm-subtitle">Boshqaruv paneliga kirish uchun PIN-kodni kiriting</p>
+            
+            <div class="pin-container" id="pin-container">
+                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="password" class="pin-box" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            </div>
+
+            <p id="login-error" class="error-msg">Noto'g'ri PIN-kod!</p>
         </div>
     </div>
 

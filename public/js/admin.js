@@ -10,23 +10,81 @@ document.addEventListener('DOMContentLoaded', async () => {
         await initDashboard();
     }
 
-    // Login logic
-    document.getElementById('login-btn').addEventListener('click', async () => {
-        const password = document.getElementById('admin-password').value;
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
+    // Login logic - PIN
+    const pinBoxes = document.querySelectorAll('.pin-box');
+    
+    pinBoxes.forEach((box, index) => {
+        box.addEventListener('input', (e) => {
+            const val = e.target.value;
+            // Faqat raqamlar
+            if (!/^[0-9]*$/.test(val)) {
+                e.target.value = val.replace(/[^0-9]/g, '');
+                return;
+            }
+            if (val.length === 1) {
+                e.target.classList.remove('error');
+                if (index < pinBoxes.length - 1) {
+                    pinBoxes[index + 1].focus();
+                } else {
+                    submitPin();
+                }
+            }
         });
-        const data = await res.json();
-        if (data.success) {
-            localStorage.setItem('adminToken', data.token);
-            document.getElementById('login-screen').style.display = 'none';
-            await initDashboard();
-        } else {
-            document.getElementById('login-error').style.display = 'block';
-        }
+        
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                pinBoxes[index - 1].focus();
+                pinBoxes[index - 1].value = '';
+            }
+        });
     });
+
+    async function submitPin() {
+        let password = '';
+        pinBoxes.forEach(box => password += box.value);
+        if(password.length !== 5) return;
+        
+        pinBoxes.forEach(box => box.disabled = true);
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                localStorage.setItem('adminToken', data.token);
+                document.getElementById('login-screen').style.display = 'none';
+                await initDashboard();
+            } else {
+                showPinError();
+            }
+        } catch(e) {
+            showPinError();
+        } finally {
+            pinBoxes.forEach(box => box.disabled = false);
+        }
+    }
+
+    function showPinError() {
+        const card = document.querySelector('.login-card');
+        const errorMsg = document.getElementById('login-error');
+        
+        pinBoxes.forEach(box => {
+            box.classList.add('error');
+            box.value = '';
+        });
+        errorMsg.classList.add('show');
+        card.classList.add('shake');
+        
+        setTimeout(() => card.classList.remove('shake'), 500);
+        setTimeout(() => pinBoxes[0].focus(), 100);
+        setTimeout(() => {
+            errorMsg.classList.remove('show');
+            pinBoxes.forEach(box => box.classList.remove('error'));
+        }, 3000);
+    }
 
     // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
