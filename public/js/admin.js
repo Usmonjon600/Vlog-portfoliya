@@ -1,75 +1,77 @@
 let supabase = null;
 let editingProjectId = null;
 
-(async () => {
-    // Bind all PIN login event listeners FIRST before any await calls that might crash
-    const numBtns = document.querySelectorAll('.num-btn[data-val]');
-    const backspaceBtn = document.getElementById('btn-backspace');
+window.currentPin = '';
+
+window.handleInput = function(val) {
+    if (window.currentPin.length < 4) {
+        window.currentPin += val;
+        window.updateDots();
+        
+        // Visual feedback
+        const btn = Array.from(document.querySelectorAll('.num-btn')).find(b => b.dataset.val === val);
+        if(btn) {
+            btn.style.background = '#374151';
+            setTimeout(() => btn.style.background = '', 150);
+        }
+
+        if (window.currentPin.length === 4) {
+            window.submitPin();
+        }
+    }
+};
+
+window.handleBackspace = function() {
+    if (window.currentPin.length > 0) {
+        window.currentPin = window.currentPin.slice(0, -1);
+        window.updateDots();
+        
+        const backspaceBtn = document.getElementById('btn-backspace');
+        if (backspaceBtn) {
+            backspaceBtn.style.background = '#374151';
+            setTimeout(() => backspaceBtn.style.background = '', 150);
+        }
+    }
+};
+
+window.updateDots = function() {
     const dots = document.querySelectorAll('.dot');
-    let currentPin = '';
-
-    function handleInput(val) {
-        if (currentPin.length < 4) {
-            currentPin += val;
-            updateDots();
-            
-            // Visual feedback for button
-            const btn = Array.from(numBtns).find(b => b.dataset.val === val);
-            if(btn) {
-                btn.style.background = '#374151';
-                setTimeout(() => btn.style.background = '', 150);
+    if (dots.length > 0) {
+        dots.forEach((dot, index) => {
+            if (index < window.currentPin.length) {
+                dot.classList.add('filled');
+            } else {
+                dot.classList.remove('filled');
+                dot.classList.remove('error');
             }
-
-            if (currentPin.length === 4) {
-                submitPin();
-            }
-        }
+        });
     }
+};
 
-    function handleBackspace() {
-        if (currentPin.length > 0) {
-            currentPin = currentPin.slice(0, -1);
-            updateDots();
-            
-            if (backspaceBtn) {
-                backspaceBtn.style.background = '#374151';
-                setTimeout(() => backspaceBtn.style.background = '', 150);
-            }
-        }
-    }
+(async () => {
+    console.log("Admin.js loaded and executing!");
 
     // Mouse Clicks
+    const numBtns = document.querySelectorAll('.num-btn[data-val]');
     if (numBtns.length > 0) {
         numBtns.forEach(btn => {
-            btn.addEventListener('click', () => handleInput(btn.dataset.val));
+            btn.onclick = () => window.handleInput(btn.dataset.val);
         });
     }
 
+    const backspaceBtn = document.getElementById('btn-backspace');
     if (backspaceBtn) {
-        backspaceBtn.addEventListener('click', handleBackspace);
+        backspaceBtn.onclick = window.handleBackspace;
     }
 
     // Physical Keyboard
     document.addEventListener('keydown', (e) => {
         if (/^[0-9]$/.test(e.key)) {
-            handleInput(e.key);
+            window.handleInput(e.key);
         } else if (e.key === 'Backspace') {
-            handleBackspace();
+            window.handleBackspace();
         }
     });
-
-    function updateDots() {
-        if (dots.length > 0) {
-            dots.forEach((dot, index) => {
-                if (index < currentPin.length) {
-                    dot.classList.add('filled');
-                } else {
-                    dot.classList.remove('filled');
-                    dot.classList.remove('error');
-                }
-            });
-        }
-    }
 
     // Check Auth AFTER binding listeners
     const token = localStorage.getItem('adminToken');
@@ -86,8 +88,8 @@ let editingProjectId = null;
         }
     }
 
-    async function submitPin() {
-        const password = currentPin;
+    window.submitPin = async function() {
+        const password = window.currentPin;
         
         // Disable buttons
         document.querySelectorAll('.num-btn').forEach(b => b.style.pointerEvents = 'none');
@@ -124,23 +126,24 @@ let editingProjectId = null;
                 console.error("Dashboard init error:", err);
             }
         }
-    }
+    };
 
     function showPinError() {
-        const card = document.querySelector('.login-card');
+        const card = document.querySelector('.login-card') || document.querySelector('.delta-dark-card');
         const errorMsg = document.getElementById('login-error');
         
+        const dots = document.querySelectorAll('.dot');
         dots.forEach(dot => {
             dot.classList.add('error');
         });
         errorMsg.classList.add('show');
-        card.classList.add('shake');
+        if (card) card.classList.add('shake');
         
-        setTimeout(() => card.classList.remove('shake'), 500);
+        if (card) setTimeout(() => card.classList.remove('shake'), 500);
         
         setTimeout(() => {
-            currentPin = '';
-            updateDots();
+            window.currentPin = '';
+            window.updateDots();
             errorMsg.classList.remove('show');
         }, 1500);
     }
