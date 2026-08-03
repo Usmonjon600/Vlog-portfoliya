@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Disable buttons
         document.querySelectorAll('.num-btn').forEach(b => b.style.pointerEvents = 'none');
         
+        let loginSuccess = false;
+        
         try {
             const res = await fetch('/api/login', {
                 method: 'POST',
@@ -86,16 +88,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
             
             if (data.success) {
+                loginSuccess = true;
                 localStorage.setItem('adminToken', data.token);
                 document.getElementById('login-screen').style.display = 'none';
-                await initDashboard();
             } else {
                 showPinError();
             }
         } catch(e) {
+            console.error("Login fetch error:", e);
             showPinError();
         } finally {
             document.querySelectorAll('.num-btn').forEach(b => b.style.pointerEvents = 'auto');
+        }
+        
+        // Load dashboard outside the PIN try/catch so errors don't trigger showPinError
+        if (loginSuccess) {
+            try {
+                await initDashboard();
+            } catch (err) {
+                console.error("Dashboard init error:", err);
+            }
         }
     }
 
