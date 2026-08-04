@@ -46,12 +46,12 @@
             opacity: 1;
         }
         
-        /* Loyihalar uchun Maxsus Hover */
-        .project-card {
+        /* Loyihalar va Xizmatlar uchun Maxsus Hover */
+        .project-card, #portfolio .card {
             position: relative;
             outline: 2px dashed transparent;
         }
-        .project-card:hover {
+        .project-card:hover, #portfolio .card:hover {
             outline: 2px dashed #a855f7;
         }
         .project-edit-btn, .project-delete-btn {
@@ -71,7 +71,9 @@
         .project-edit-btn { right: 10px; }
         .project-delete-btn { right: 80px; background: #ef4444; }
         .project-card:hover .project-edit-btn,
-        .project-card:hover .project-delete-btn {
+        .project-card:hover .project-delete-btn,
+        #portfolio .card:hover .project-edit-btn,
+        #portfolio .card:hover .project-delete-btn {
             opacity: 1;
         }
 
