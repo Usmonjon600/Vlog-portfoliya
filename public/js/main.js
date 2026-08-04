@@ -271,7 +271,7 @@ async function initApp() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === 'true') {
             const script = document.createElement('script');
-            script.src = 'js/admin-editor.js';
+            script.src = 'js/admin-editor.js?v=11';
             document.body.appendChild(script);
             
             // Xabarlarni qabul qilish (masalan updateTranslation)
