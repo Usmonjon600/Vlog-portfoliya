@@ -244,6 +244,9 @@ async function initDashboard() {
             const resultData = await res.json();
             if (resultData.success) {
                 alert("O'zgarishlar muvaffaqiyatli saqlandi! 🎉");
+                // LocalStorage keshni ham yangilab qo'yamiz (tezkor ko'rsatish uchun)
+                localStorage.setItem('site_content_cache', JSON.stringify(mergedContent));
+                
                 // Iframe ni yangilash
                 iframe.src = iframe.src;
                 modifiedContent = {}; // O'zgarishlarni tozalash

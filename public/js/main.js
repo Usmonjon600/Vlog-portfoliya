@@ -211,11 +211,38 @@ const orderForm = document.getElementById('order-form');
 
 let lenis; // Smooth scroll instance
 
+// Keshdan darhol yuklash (Miltillashni oldini olish uchun sinxron ravishda ishlaydi)
+try {
+    const cached = localStorage.getItem('site_content_cache');
+    if (cached) {
+        dynamicTranslations = JSON.parse(cached);
+        // DOM to'liq yuklanmasdan oldin faqatgina preloader matnini yangilaymiz
+        const loaderText = document.querySelector('.loader-logo');
+        if (loaderText) {
+            const staticTexts = staticTranslations[currentLang] || {};
+            const dynTexts = dynamicTranslations[currentLang] || {};
+            const texts = { ...staticTexts, ...dynTexts };
+            if (texts['navLogoText']) {
+                loaderText.innerHTML = texts['navLogoText'];
+            }
+        }
+    }
+} catch(e) {}
+
 // Loyihani ishga tushirish
 async function initApp() {
     try {
         initLenis();
         initCustomCursor();
+        
+        // Keshlangan ma'lumotlarni darhol yuklab, ekranga chiqarish (Miltillashni yo'qotish uchun)
+        const cached = localStorage.getItem('site_content_cache');
+        if (cached) {
+            try {
+                dynamicTranslations = JSON.parse(cached);
+                updateLanguage(currentLang);
+            } catch(e) {}
+        }
 
         // Load configs
         const response = await fetch('data/config.json');
@@ -230,6 +257,7 @@ async function initApp() {
             const { data, error } = await supabase.from('site_content').select('*').eq('id', 1).single();
             if (data && data.config_data) {
                 dynamicTranslations = data.config_data;
+                localStorage.setItem('site_content_cache', JSON.stringify(dynamicTranslations));
                 console.log("Supabase'dan ma'lumotlar yuklandi:", dynamicTranslations);
             }
         } catch(e) {
