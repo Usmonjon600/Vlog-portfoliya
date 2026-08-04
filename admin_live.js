@@ -1,4 +1,6 @@
+let supabase = null;
 let editingProjectId = null;
+
 window.currentPin = '';
 
 window.handleInput = function(val) {
