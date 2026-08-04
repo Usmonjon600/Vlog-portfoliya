@@ -47,22 +47,20 @@ app.post('/api/save-content', async (req, res) => {
         }
         
         const { config_data } = req.body;
-        
         const supabaseUrl = process.env.SUPABASE_URL;
         const supabaseKey = process.env.SUPABASE_KEY;
-        const secret = process.env.ADMIN_PASSWORD || '0123';
         
-        // Supabase RPC chaqiruvi (update_site_content funksiyasi SQL orqali yaratilgan)
-        const response = await fetch(`${supabaseUrl}/rest/v1/rpc/update_site_content`, {
-            method: 'POST',
+        // Supabase REST API orqali to'g'ridan-to'g'ri UPDATE (PATCH) qilish
+        const response = await fetch(`${supabaseUrl}/rest/v1/site_content?id=eq.1`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'apikey': supabaseKey,
-                'Authorization': `Bearer ${supabaseKey}`
+                'Authorization': `Bearer ${supabaseKey}`,
+                'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-                new_data: config_data,
-                secret: secret
+                config_data: config_data
             })
         });
         
