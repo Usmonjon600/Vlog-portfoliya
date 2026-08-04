@@ -183,13 +183,21 @@ async function initDashboard() {
             
             // Loyiha qo'shish/tahrirlash modalini ochish
             if (action === 'openProjectModal') {
+                console.log("Admin.js: openProjectModal received with data:", data);
                 if (data.id) {
                     editProject(data.id);
                 } else {
                     editingProjectId = null;
-                    document.getElementById('project-modal-title').innerText = "Yangi Loyiha Qo'shish";
-                    clearProjectForm();
-                    document.getElementById('project-modal').style.display = 'flex';
+                    const titleEl = document.getElementById('project-modal-title');
+                    if (titleEl) titleEl.innerText = "Yangi Loyiha Qo'shish";
+                    try { clearProjectForm(); } catch(e) { console.error("Error clearing project form:", e); }
+                    const modal = document.getElementById('project-modal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        console.log("Admin.js: project-modal display set to flex");
+                    } else {
+                        console.error("Admin.js: project-modal element NOT FOUND!");
+                    }
                 }
             }
             
@@ -200,13 +208,21 @@ async function initDashboard() {
             
             // Xizmat qo'shish/tahrirlash modalini ochish
             if (action === 'openServiceModal') {
+                console.log("Admin.js: openServiceModal received with data:", data);
                 if (data.id) {
                     editService(data.id);
                 } else {
                     editingServiceId = null;
-                    document.getElementById('service-modal-title').innerText = "Yangi Xizmat Qo'shish";
-                    clearServiceForm();
-                    document.getElementById('service-modal').style.display = 'flex';
+                    const titleEl = document.getElementById('service-modal-title');
+                    if (titleEl) titleEl.innerText = "Yangi Xizmat Qo'shish";
+                    try { clearServiceForm(); } catch(e) { console.error("Error clearing service form:", e); }
+                    const modal = document.getElementById('service-modal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        console.log("Admin.js: service-modal display set to flex");
+                    } else {
+                        console.error("Admin.js: service-modal element NOT FOUND!");
+                    }
                 }
             }
             
