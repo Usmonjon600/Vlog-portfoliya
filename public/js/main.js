@@ -30,7 +30,7 @@ const staticTranslations = {
         aboutP1: "Men korporativ darajadagi tizimlar, kengaytiriladigan veb-ilovalar va real biznes muammolarini hal qiluvchi AI-integratsiyalangan yechimlarni yaratishga ishtiyoqmand dasturiy muhandisman.",
         aboutP2: "Zenity Developer Team a'zosi sifatida men to'liq stek mahsulotlarni loyihalash va ishlab chiqaman — butun biznes operatsiyalarini boshqaradigan ERP tizimlaridan zamonaviy SaaS platformalargacha. Mening asosiy e'tiborim doimo toza arxitektura, ishlash samaradorligi va ajoyib foydalanuvchi tajribasiga qaratilgan.",
         aboutP3: "Men shunday dasturiy ta'minotga ishonamanki, u ko'rinmas bo'lishi kerak — ichida kuchli, foydalanish oson. Men yozgan har bir kod qatori talablarga javob berishdan ko'ra, haqiqiy qiymat berishga qaratilgan.",
-        servicesTitle: "Bizning xizmatlar",
+        servicesTitle: "Mening xizmatlarim",
         projectsTitle: "Natijalar",
         project1Title: "Zapravka va Yonilg'i Boshqaruv Tizimi",
         project1Desc: "10 dan ortiq zapravkalar tajribasi asosida yaratilgan universal platforma. Yonilg'i va gaz hajmi minimumlarini kuzatish, tariflar va tarqatish uskunalarini (dispenser) boshqarish, xavfli darajada avtomatik ogohlantirishlar berish imkoniyati.",

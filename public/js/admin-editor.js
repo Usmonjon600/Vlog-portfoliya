@@ -194,11 +194,68 @@
         });
     }
 
+    // Xizmatlarga edit/delete tugmalarini qo'shish
+    function initServiceEditors() {
+        const portfolioGrid = document.querySelector('#portfolio .grid');
+        if (!portfolioGrid) return;
+        
+        // Agar add-new card bo'lmasa, qo'shish
+        if (!document.querySelector('.add-new-service-card')) {
+            const addCard = document.createElement('div');
+            addCard.className = 'card glass-container add-new-service-card tilt-card';
+            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:300px; cursor:pointer;">
+                <div style="font-size:3rem; color:#0ea5e9; font-weight:bold;">+</div>
+                <h3 style="margin-top:15px; color:#fff;">Yangi Xizmat</h3>
+            </div>`;
+            addCard.onclick = () => {
+                sendToParent('openServiceModal', { id: null });
+            };
+            portfolioGrid.appendChild(addCard);
+        }
+
+        // Barcha mavjud xizmat kartochkalariga edit tugmasi
+        document.querySelectorAll('#portfolio .card:not(.add-new-service-card)').forEach((card, index) => {
+            if (card.querySelector('.project-edit-btn')) return;
+
+            // Xizmatlar 'id' orqali olinadi, ammo DOM-da u saqlanmayapti.
+            // main.js da onclick="openDetailsModal('id')" bor, o'shandan ID ni sug'urib olamiz.
+            const btn = card.querySelector('button[onclick^="openDetailsModal"]');
+            if (!btn) return;
+            const match = btn.getAttribute('onclick').match(/'([^']+)'/);
+            const serviceId = match ? match[1] : null;
+            if (!serviceId) return;
+            
+            card.style.position = 'relative';
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'project-edit-btn';
+            editBtn.innerText = '✏️ Edit';
+            editBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sendToParent('openServiceModal', { id: serviceId });
+            };
+            
+            const delBtn = document.createElement('button');
+            delBtn.className = 'project-delete-btn';
+            delBtn.innerText = '🗑️';
+            delBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                sendToParent('deleteService', { id: serviceId });
+            };
+
+            card.appendChild(editBtn);
+            card.appendChild(delBtn);
+        });
+    }
+
     // Sahifa render bo'lgandan keyin barchasini initsializatsiya qilish
     // MutationObserver orqali DOM o'zgarganda (masalan, loyihalar yuklanganda) yangilash
     const observer = new MutationObserver(() => {
         initTextEditors();
         initProjectEditors();
+        initServiceEditors();
     });
 
     observer.observe(document.body, { childList: true, subtree: true });

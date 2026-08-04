@@ -197,6 +197,23 @@ async function initDashboard() {
             if (action === 'deleteProject') {
                 deleteProject(data.id);
             }
+            
+            // Xizmat qo'shish/tahrirlash modalini ochish
+            if (action === 'openServiceModal') {
+                if (data.id) {
+                    editService(data.id);
+                } else {
+                    editingServiceId = null;
+                    document.getElementById('service-modal-title').innerText = "Yangi Xizmat Qo'shish";
+                    clearServiceForm();
+                    document.getElementById('service-modal').style.display = 'flex';
+                }
+            }
+            
+            // Xizmatni o'chirish
+            if (action === 'deleteService') {
+                deleteService(data.id);
+            }
         }
     });
 
@@ -243,6 +260,9 @@ async function initDashboard() {
     
     // Project Modal saqlash tugmasi
     document.getElementById('save-project-btn').addEventListener('click', saveProject);
+    
+    // Service Modal saqlash tugmasi
+    document.getElementById('save-service-btn').addEventListener('click', saveService);
 
     // Boshlang'ich datalarni olish
     try {
@@ -329,5 +349,88 @@ async function deleteProject(id) {
         // Iframe ni yangilash
         const iframe = document.getElementById('live-preview');
         iframe.src = iframe.src;
+    }
+}
+
+let editingServiceId = null;
+
+function clearServiceForm() {
+    document.getElementById('s_title').value = '';
+    document.getElementById('s_desc').value = '';
+    document.getElementById('s_features').value = '';
+    document.getElementById('s_price').value = '';
+}
+
+function editService(id) {
+    // Uz tilidan olamiz
+    const portfolio = (dynamicTranslations && dynamicTranslations.uz && dynamicTranslations.uz.portfolio) || [];
+    const service = portfolio.find(s => s.id === id);
+    if (service) {
+        editingServiceId = id;
+        document.getElementById('service-modal-title').innerText = "Xizmatni Tahrirlash";
+        
+        document.getElementById('s_title').value = service.title;
+        document.getElementById('s_desc').value = service.description;
+        document.getElementById('s_features').value = service.features.join('\\n');
+        document.getElementById('s_price').value = service.priceEstimate;
+        
+        document.getElementById('service-modal').style.display = 'flex';
+    }
+}
+
+async function saveService() {
+    const btn = document.getElementById('save-service-btn');
+    btn.innerText = "Kuting...";
+    btn.disabled = true;
+
+    if (!dynamicTranslations) dynamicTranslations = {};
+    
+    const sId = editingServiceId || 'service_' + Date.now();
+    const serviceData = {
+        id: sId,
+        title: document.getElementById('s_title').value,
+        description: document.getElementById('s_desc').value,
+        features: document.getElementById('s_features').value.split('\\n').filter(f => f.trim() !== ''),
+        priceEstimate: document.getElementById('s_price').value,
+        btnLabel: "Batafsil"
+    };
+
+    // Hamma tillarga bir xil qo'shamiz hozircha
+    ['uz', 'ru', 'en'].forEach(lang => {
+        if (!dynamicTranslations[lang]) dynamicTranslations[lang] = {};
+        if (!dynamicTranslations[lang].portfolio) dynamicTranslations[lang].portfolio = [];
+        
+        const arr = dynamicTranslations[lang].portfolio;
+        const index = arr.findIndex(s => s.id === sId);
+        
+        if (index !== -1) {
+            arr[index] = serviceData;
+        } else {
+            arr.push(serviceData);
+        }
+        
+        // modifiedContent ga yozamiz
+        if (!modifiedContent[lang]) modifiedContent[lang] = {};
+        modifiedContent[lang].portfolio = arr;
+    });
+    
+    document.getElementById('service-modal').style.display = 'none';
+    btn.innerText = "Saqlash";
+    btn.disabled = false;
+    
+    // Iframe ni yangilash va Live editorda ko'rsatish
+    alert("Xizmat qo'shildi! Endi tepada '💾 Saqlash' tugmasini bosib saytga yuboring.");
+}
+
+function deleteService(id) {
+    if (confirm("Rostdan ham bu xizmatni o'chirmoqchimisiz?")) {
+        ['uz', 'ru', 'en'].forEach(lang => {
+            if (dynamicTranslations[lang] && dynamicTranslations[lang].portfolio) {
+                dynamicTranslations[lang].portfolio = dynamicTranslations[lang].portfolio.filter(s => s.id !== id);
+                if (!modifiedContent[lang]) modifiedContent[lang] = {};
+                modifiedContent[lang].portfolio = dynamicTranslations[lang].portfolio;
+            }
+        });
+        alert("Xizmat o'chirildi! Endi tepada '💾 Saqlash' tugmasini bosib saytga yuboring.");
     }
 }
