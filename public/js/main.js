@@ -27,9 +27,7 @@ const staticTranslations = {
         navCalcBtn: "Narx hisoblash",
         navDiscussBtn: "Muhokama qilish",
         aboutTitle: "Men haqimda",
-        aboutP1: "Men korporativ darajadagi tizimlar, kengaytiriladigan veb-ilovalar va real biznes muammolarini hal qiluvchi AI-integratsiyalangan yechimlarni yaratishga ishtiyoqmand dasturiy muhandisman.",
-        aboutP2: "Zenity Developer Team a'zosi sifatida men to'liq stek mahsulotlarni loyihalash va ishlab chiqaman — butun biznes operatsiyalarini boshqaradigan ERP tizimlaridan zamonaviy SaaS platformalargacha. Mening asosiy e'tiborim doimo toza arxitektura, ishlash samaradorligi va ajoyib foydalanuvchi tajribasiga qaratilgan.",
-        aboutP3: "Men shunday dasturiy ta'minotga ishonamanki, u ko'rinmas bo'lishi kerak — ichida kuchli, foydalanish oson. Men yozgan har bir kod qatori talablarga javob berishdan ko'ra, haqiqiy qiymat berishga qaratilgan.",
+        aboutText: "<p>Men korporativ darajadagi tizimlar, kengaytiriladigan veb-ilovalar va real biznes muammolarini hal qiluvchi AI-integratsiyalangan yechimlarni yaratishga ishtiyoqmand dasturiy muhandisman.</p><p>Zenity Developer Team a'zosi sifatida men to'liq stek mahsulotlarni loyihalash va ishlab chiqaman — butun biznes operatsiyalarini boshqaradigan ERP tizimlaridan zamonaviy SaaS platformalargacha. Mening asosiy e'tiborim doimo toza arxitektura, ishlash samaradorligi va ajoyib foydalanuvchi tajribasiga qaratilgan.</p><p>Men shunday dasturiy ta'minotga ishonamanki, u ko'rinmas bo'lishi kerak — ichida kuchli, foydalanish oson. Men yozgan har bir kod qatori talablarga javob berishdan ko'ra, haqiqiy qiymat berishga qaratilgan.</p>",
         servicesTitle: "Mening xizmatlarim",
         projectsTitle: "Natijalar",
         project1Title: "Zapravka va Yonilg'i Boshqaruv Tizimi",
@@ -91,9 +89,7 @@ const staticTranslations = {
         navCalcBtn: "Calculate Price",
         navDiscussBtn: "Discuss Project",
         aboutTitle: "About Me",
-        aboutP1: "I am a software engineer passionate about building enterprise-grade systems, scalable web applications, and AI-integrated solutions that solve real business problems.",
-        aboutP2: "As a member of the Zenity Developer Team, I design and develop full-stack products — from ERP systems managing entire business operations to modern SaaS platforms. My main focus is always on clean architecture, performance efficiency, and excellent user experience.",
-        aboutP3: "I believe in software that should be invisible — powerful on the inside, easy to use on the outside. Every line of code I write is aimed at delivering true value rather than just meeting requirements.",
+        aboutText: "<p>I am a software engineer passionate about building enterprise-grade systems, scalable web applications, and AI-integrated solutions that solve real business problems.</p><p>As a member of the Zenity Developer Team, I design and develop full-stack products — from ERP systems managing entire business operations to modern SaaS platforms. My main focus is always on clean architecture, performance efficiency, and excellent user experience.</p><p>I believe in software that should be invisible — powerful on the inside, easy to use on the outside. Every line of code I write is aimed at delivering true value rather than just meeting requirements.</p>",
         servicesTitle: "My Services",
         projectsTitle: "Projects",
         project1Title: "Gas Station Fuel Management System",
@@ -156,9 +152,7 @@ const staticTranslations = {
         navCalcBtn: "Рассчитать",
         navDiscussBtn: "Обсудить проект",
         aboutTitle: "Обо мне",
-        aboutP1: "Я инженер-программист, увлеченный созданием систем корпоративного уровня, масштабируемых веб-приложений и решений с интеграцией ИИ, которые решают реальные бизнес-задачи.",
-        aboutP2: "Как член команды Zenity Developer Team, я проектирую и разрабатываю full-stack продукты — от ERP-систем для управления бизнес-операциями до современных SaaS-платформ. Мое основное внимание всегда уделяется чистой архитектуре, производительности и отличному пользовательскому опыту.",
-        aboutP3: "Я верю в программное обеспечение, которое должно быть незаметным — мощным внутри, простым в использовании снаружи. Каждая написанная мной строчка кода направлена на создание реальной ценности, а не просто на выполнение требований.",
+        aboutText: "<p>Я инженер-программист, страстно желающий создавать системы корпоративного уровня, масштабируемые веб-приложения и решения с интеграцией ИИ, которые решают реальные бизнес-задачи.</p><p>В качестве члена команды Zenity Developer Team я проектирую и разрабатываю продукты полного стека — от ERP-систем, управляющих всеми бизнес-операциями, до современных SaaS-платформ. Мое основное внимание всегда сосредоточено на чистой архитектуре, эффективности работы и отличном пользовательском опыте.</p><p>Я верю в то, что программное обеспечение должно быть невидимым — мощным внутри, простым в использовании снаружи. Каждая написанная мной строка кода направлена на обеспечение истинной ценности, а не просто на выполнение требований.</p>",
         servicesTitle: "Мои услуги",
         projectsTitle: "Мои проекты",
         project1Title: "Система управления топливом на АЗС",
@@ -271,6 +265,11 @@ function updateLanguage(lang) {
     const staticTexts = staticTranslations[lang] || {};
     const dynTexts = (dynamicTranslations && dynamicTranslations[lang]) ? dynamicTranslations[lang] : {};
     
+    // Eski versiya bilan moslik (agar bazada alohida P1, P2, P3 bo'lsa)
+    if (!dynTexts.aboutText && (dynTexts.aboutP1 || dynTexts.aboutP2 || dynTexts.aboutP3)) {
+        dynTexts.aboutText = `<p>${dynTexts.aboutP1 || staticTexts.aboutP1 || ''}</p><p>${dynTexts.aboutP2 || staticTexts.aboutP2 || ''}</p><p>${dynTexts.aboutP3 || staticTexts.aboutP3 || ''}</p>`;
+    }
+
     // Ikkalasini birlashtiramiz (dinamik ustun turadi)
     const texts = { ...staticTexts, ...dynTexts };
     
