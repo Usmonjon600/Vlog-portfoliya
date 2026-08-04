@@ -148,72 +148,118 @@ window.updateDots = function() {
         }, 1500);
     }
 
-    // Logout
+    // Chiqish
     document.getElementById('logout-btn').addEventListener('click', function logout() {
         localStorage.removeItem('adminToken');
         window.location.reload();
     });
 
-    // Tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            if(e.target.id === 'logout-btn') return;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-            
-            e.target.classList.add('active');
-            document.getElementById(e.target.dataset.target).style.display = 'block';
-        });
-    });
-
-    // Project Modal
-    document.getElementById('add-project-btn').addEventListener('click', () => {
-        editingProjectId = null;
-        document.getElementById('project-modal-title').innerText = "Loyiha Qo'shish";
-        clearProjectForm();
-        document.getElementById('project-modal').style.display = 'flex';
-    });
-
-    document.getElementById('save-project-btn').addEventListener('click', saveProject);
 })();
 
-async function initDashboard() {
-    document.getElementById('dashboard-screen').style.display = 'block';
-    
-    // Fetch Supabase Config
-    const res = await fetch('/api/config');
-    const config = await res.json();
-    
-    // Init Supabase
-    supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
-    
-    // Load Data
-    await loadProjects();
-}
+// Barcha o'zgarishlarni o'zida saqlaydigan obyekt
+let modifiedContent = {};
+let dynamicTranslations = null; // Supabase-dan olingan eski ma'lumotlar
 
-async function loadProjects() {
-    const { data, error } = await supabase.from('projects').select('*').order('id', { ascending: false });
-    if (error) {
-        console.error("Xatolik:", error);
-        return;
-    }
+async function initDashboard() {
+    document.getElementById('dashboard-screen').style.display = 'flex';
     
-    const tbody = document.getElementById('projects-tbody');
-    tbody.innerHTML = '';
-    
-    data.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.title_uz}</td>
-            <td>${p.tags}</td>
-            <td>
-                <button class="action-btn edit" onclick="editProject(${p.id})">Tahrirlash</button>
-                <button class="action-btn delete" onclick="deleteProject(${p.id})">O'chirish</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
+    // Iframe src ni sozlash
+    const iframe = document.getElementById('live-preview');
+    iframe.src = '/?admin=true'; // Admin rejimida ochiladi
+
+    // Xabarlarni qabul qilish
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.source === 'live-editor') {
+            const { action, data } = event.data;
+            
+            if (action === 'ready') {
+                console.log("Iframe ichidagi Live Editor tayyor!");
+            }
+            
+            if (action === 'updateTranslation') {
+                const { lang, key, value } = data;
+                if (!modifiedContent[lang]) modifiedContent[lang] = {};
+                modifiedContent[lang][key] = value;
+                console.log("O'zgarish saqlandi:", modifiedContent);
+            }
+            
+            // Loyiha qo'shish/tahrirlash modalini ochish
+            if (action === 'openProjectModal') {
+                if (data.id) {
+                    editProject(data.id);
+                } else {
+                    editingProjectId = null;
+                    document.getElementById('project-modal-title').innerText = "Yangi Loyiha Qo'shish";
+                    clearProjectForm();
+                    document.getElementById('project-modal').style.display = 'flex';
+                }
+            }
+            
+            // Loyihani o'chirish
+            if (action === 'deleteProject') {
+                deleteProject(data.id);
+            }
+        }
     });
+
+    // Saqlash tugmasi
+    document.getElementById('save-live-btn').addEventListener('click', async () => {
+        try {
+            document.getElementById('save-live-btn').innerText = 'Saqlanmoqda...';
+            
+            // Eski ma'lumotlar bilan yangilarini birlashtiramiz
+            const mergedContent = { ...(dynamicTranslations || {}) };
+            
+            for (const lang in modifiedContent) {
+                if (!mergedContent[lang]) mergedContent[lang] = {};
+                mergedContent[lang] = { ...mergedContent[lang], ...modifiedContent[lang] };
+            }
+            
+            // Serverga yuborish
+            const token = localStorage.getItem('adminToken');
+            const res = await fetch('/api/save-content', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ config_data: mergedContent })
+            });
+            
+            const resultData = await res.json();
+            if (resultData.success) {
+                alert("O'zgarishlar muvaffaqiyatli saqlandi! 🎉");
+                // Iframe ni yangilash
+                iframe.src = iframe.src;
+                modifiedContent = {}; // O'zgarishlarni tozalash
+            } else {
+                alert("Xatolik: " + resultData.message);
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Saqlashda xatolik yuz berdi.");
+        } finally {
+            document.getElementById('save-live-btn').innerText = '💾 Saqlash';
+        }
+    });
+    
+    // Project Modal saqlash tugmasi
+    document.getElementById('save-project-btn').addEventListener('click', saveProject);
+
+    // Boshlang'ich datalarni olish
+    try {
+        const res = await fetch('/api/config');
+        const config = await res.json();
+        // Supabase ni global qilish
+        window.supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+        
+        const { data, error } = await window.supabaseClient.from('site_content').select('*').eq('id', 1).single();
+        if (data && data.config_data) {
+            dynamicTranslations = data.config_data;
+        }
+    } catch(e) {
+        console.error(e);
+    }
 }
 
 function clearProjectForm() {
@@ -224,33 +270,11 @@ function clearProjectForm() {
     document.getElementById('p_title_ru').value = '';
     document.getElementById('p_desc_ru').value = '';
     document.getElementById('p_tags').value = '';
-}
-
-async function saveProject() {
-    const projectData = {
-        title_uz: document.getElementById('p_title_uz').value,
-        desc_uz: document.getElementById('p_desc_uz').value,
-        title_en: document.getElementById('p_title_en').value,
-        desc_en: document.getElementById('p_desc_en').value,
-        title_ru: document.getElementById('p_title_ru').value,
-        desc_ru: document.getElementById('p_desc_ru').value,
-        tags: document.getElementById('p_tags').value
-    };
-
-    if (editingProjectId) {
-        // Update
-        await supabase.from('projects').update(projectData).eq('id', editingProjectId);
-    } else {
-        // Insert
-        await supabase.from('projects').insert([projectData]);
-    }
-    
-    document.getElementById('project-modal').style.display = 'none';
-    await loadProjects();
+    document.getElementById('p_demo').value = '';
 }
 
 async function editProject(id) {
-    const { data, error } = await supabase.from('projects').select('*').eq('id', id).single();
+    const { data, error } = await window.supabaseClient.from('projects').select('*').eq('id', id).single();
     if (data) {
         editingProjectId = id;
         document.getElementById('project-modal-title').innerText = "Loyihani Tahrirlash";
@@ -262,14 +286,50 @@ async function editProject(id) {
         document.getElementById('p_title_ru').value = data.title_ru;
         document.getElementById('p_desc_ru').value = data.desc_ru;
         document.getElementById('p_tags').value = data.tags;
+        document.getElementById('p_demo').value = data.demo_url || '';
         
         document.getElementById('project-modal').style.display = 'flex';
     }
 }
 
+async function saveProject() {
+    const btn = document.getElementById('save-project-btn');
+    btn.innerText = "Kuting...";
+    btn.disabled = true;
+
+    const projectData = {
+        title_uz: document.getElementById('p_title_uz').value,
+        desc_uz: document.getElementById('p_desc_uz').value,
+        title_en: document.getElementById('p_title_en').value,
+        desc_en: document.getElementById('p_desc_en').value,
+        title_ru: document.getElementById('p_title_ru').value,
+        desc_ru: document.getElementById('p_desc_ru').value,
+        tags: document.getElementById('p_tags').value,
+        demo_url: document.getElementById('p_demo').value
+    };
+
+    if (editingProjectId) {
+        // Update
+        await window.supabaseClient.from('projects').update(projectData).eq('id', editingProjectId);
+    } else {
+        // Insert
+        await window.supabaseClient.from('projects').insert([projectData]);
+    }
+    
+    document.getElementById('project-modal').style.display = 'none';
+    btn.innerText = "Saqlash";
+    btn.disabled = false;
+    
+    // Iframe ni yangilash
+    const iframe = document.getElementById('live-preview');
+    iframe.src = iframe.src;
+}
+
 async function deleteProject(id) {
     if (confirm("Rostdan ham bu loyihani o'chirmoqchimisiz?")) {
-        await supabase.from('projects').delete().eq('id', id);
-        await loadProjects();
+        await window.supabaseClient.from('projects').delete().eq('id', id);
+        // Iframe ni yangilash
+        const iframe = document.getElementById('live-preview');
+        iframe.src = iframe.src;
     }
 }

@@ -7,7 +7,10 @@ let currentLang = localStorage.getItem('lang') || 'uz';
 let typingInterval = null;
 let typingTimeout = null;
 
-// Static Translations
+// Tahrirlangan yoki bazadan olingan dinamik tarjimalar
+let dynamicTranslations = null;
+
+// Static Translations (Fallback)
 const staticTranslations = {
     uz: {
         heroGreeting: "Salom, men",
@@ -27,12 +30,12 @@ const staticTranslations = {
         aboutP1: "Men korporativ darajadagi tizimlar, kengaytiriladigan veb-ilovalar va real biznes muammolarini hal qiluvchi AI-integratsiyalangan yechimlarni yaratishga ishtiyoqmand dasturiy muhandisman.",
         aboutP2: "Zenity Developer Team a'zosi sifatida men to'liq stek mahsulotlarni loyihalash va ishlab chiqaman — butun biznes operatsiyalarini boshqaradigan ERP tizimlaridan zamonaviy SaaS platformalargacha. Mening asosiy e'tiborim doimo toza arxitektura, ishlash samaradorligi va ajoyib foydalanuvchi tajribasiga qaratilgan.",
         aboutP3: "Men shunday dasturiy ta'minotga ishonamanki, u ko'rinmas bo'lishi kerak — ichida kuchli, foydalanish oson. Men yozgan har bir kod qatori talablarga javob berishdan ko'ra, haqiqiy qiymat berishga qaratilgan.",
-        servicesTitle: "Mening xizmatlarim",
+        servicesTitle: "Bizning xizmatlar",
         projectsTitle: "Natijalar",
         project1Title: "Zapravka va Yonilg'i Boshqaruv Tizimi",
         project1Desc: "10 dan ortiq zapravkalar tajribasi asosida yaratilgan universal platforma. Yonilg'i va gaz hajmi minimumlarini kuzatish, tariflar va tarqatish uskunalarini (dispenser) boshqarish, xavfli darajada avtomatik ogohlantirishlar berish imkoniyati.",
         project2Title: "Avtomatlashtirilgan Do'kon CRM Tizimi",
-        project2Desc: "Admin va kassirlar uchun alohida interfeysga ega CRM. Tovar qoldiqlarini avtomatik nazorat qilish, nasiya va qarzlar hisobi, kunlik tushum/xarajat tahlili hamda Telegram bot orqali tezkor hisobotlar.",
+        project2Desc: "Admin va kassirlar uchun alohida interfeysga ega CRM. Tovar qoldiqlarini avtomatik nazorat qilish, nasiya va qarzlar built, kunlik tushum/xarajat tahlili hamda Telegram bot orqali tezkor hisobotlar.",
         btnDemo: "Batafsil",
         calcTitle: "Loyiha narxini hisoblash",
         calcTotalText: "Jami taxminiy narx:",
@@ -205,11 +208,41 @@ async function initApp() {
         initLenis();
         initCustomCursor();
 
+        // Load configs
         const response = await fetch('data/config.json');
         rawConfigData = await response.json();
         
+        // Supabase-dan sayt ma'lumotlarini yuklash
+        try {
+            const res = await fetch('/api/config');
+            const config = await res.json();
+            const supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+            
+            const { data, error } = await supabase.from('site_content').select('*').eq('id', 1).single();
+            if (data && data.config_data) {
+                dynamicTranslations = data.config_data;
+                console.log("Supabase'dan ma'lumotlar yuklandi:", dynamicTranslations);
+            }
+        } catch(e) {
+            console.error("Supabase site_content yuklashda xato:", e);
+        }
+        
         updateLanguage(currentLang);
         removeLoader();
+        
+        // Agar admin rejimida bo'lsak admin-editor.js ni ulash
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'true') {
+            const script = document.createElement('script');
+            script.src = 'js/admin-editor.js';
+            document.body.appendChild(script);
+            
+            // Xabarlarni qabul qilish (masalan updateTranslation)
+            window.addEventListener('message', (event) => {
+                // Biz faqat yuborilgan translation o'zgarishlarini eshitib qo'yishimiz mumkin
+                // O'zgarishlar admin.js (ota oyna) da saqlanadi
+            });
+        }
 
     } catch (error) {
         console.error("Config ma'lumotlarini yuklashda xatolik:", error);
@@ -220,15 +253,21 @@ function updateLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('lang', lang);
     
-    const texts = staticTranslations[lang];
-    if (texts) {
+    const staticTexts = staticTranslations[lang] || {};
+    const dynTexts = (dynamicTranslations && dynamicTranslations[lang]) ? dynamicTranslations[lang] : {};
+    
+    // Ikkalasini birlashtiramiz (dinamik ustun turadi)
+    const texts = { ...staticTexts, ...dynTexts };
+    
+    if (Object.keys(texts).length > 0) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (texts[key]) {
+                // Agar input bo'lsa placeholder, bo'lmasa HTML (br taglari ishlashi uchun)
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     el.placeholder = texts[key];
                 } else {
-                    el.innerText = texts[key];
+                    el.innerHTML = texts[key];
                 }
             }
         });
@@ -864,6 +903,7 @@ async function loadProjectsFromDB() {
             
             const card = document.createElement('div');
             card.className = 'card glass-container project-card tilt-card';
+            card.dataset.id = p.id;
             
             card.innerHTML = `
                 <div class="tilt-card-content" style="display: flex; flex-direction: column; height: 100%;">

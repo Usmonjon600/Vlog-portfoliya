@@ -48,107 +48,66 @@
         </div>
     </div>
 
-    <!-- DASHBOARD EKRANI -->
-    <div id="dashboard-screen" class="admin-container" style="display: none;">
-        <nav class="admin-nav glass-container">
-            <h2 class="neon-text-sm">Boshqaruv Paneli</h2>
-            <div class="admin-tabs">
-                <button class="tab-btn active" data-target="projects-tab">Natijalar (Loyihalar)</button>
-                <button class="tab-btn" data-target="services-tab">Xizmatlar</button>
-                <button id="logout-btn" class="btn btn-outline" style="padding: 5px 15px;">Chiqish</button>
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" style="display: none; height: 100vh; width: 100vw; overflow: hidden; flex-direction: column; background: #0a0e17;">
+        <div class="admin-nav" style="margin: 0; border-radius: 0; background: #111827; border-bottom: 1px solid #1f2937; padding: 10px 30px;">
+            <div style="color: #0ea5e9; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-block; width: 10px; height: 10px; background: #0ea5e9; border-radius: 50%; box-shadow: 0 0 10px #0ea5e9; animation: pulse 2s infinite;"></span>
+                Live Editor
             </div>
-        </nav>
-
-        <main class="admin-main">
-            <!-- PROJECTS TAB -->
-            <div id="projects-tab" class="tab-content active">
-                <div class="tab-header">
-                    <h3>Loyihalar Ro'yxati</h3>
-                    <button class="btn btn-primary" id="add-project-btn">+ Yangi Qo'shish</button>
-                </div>
-                <div class="glass-card">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Loyiha nomi (UZ)</th>
-                                <th>Texnologiyalar</th>
-                                <th>Amallar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="projects-tbody">
-                            <!-- JS orqali to'ldiriladi -->
-                        </tbody>
-                    </table>
-                </div>
+            <div style="display: flex; gap: 15px;">
+                <button id="save-live-btn" class="btn" style="background: #0ea5e9; color: #fff;">💾 Saqlash</button>
+                <button id="logout-btn" class="btn" style="background: rgba(255,255,255,0.1); color: #fff;">Chiqish</button>
             </div>
-
-            <!-- SERVICES TAB -->
-            <div id="services-tab" class="tab-content" style="display: none;">
-                <div class="tab-header">
-                    <h3>Xizmatlar Ro'yxati</h3>
-                    <button class="btn btn-primary" id="add-service-btn">+ Yangi Qo'shish</button>
-                </div>
-                <div class="glass-card" style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Xizmat nomi (UZ)</th>
-                                <th>Narxi (UZ)</th>
-                                <th>Amallar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="services-tbody">
-                            <!-- JS orqali to'ldiriladi -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+        </div>
+        <iframe id="live-preview" style="flex: 1; width: 100%; border: none; background: #000;"></iframe>
     </div>
 
-    <!-- PROJECT MODAL -->
+    <!-- Project Modal -->
     <div id="project-modal" class="modal-overlay" style="display: none;">
-        <div class="glass-card modal-content admin-modal">
-            <h3 id="project-modal-title">Loyiha qo'shish</h3>
-            <div class="form-grid">
-                <!-- UZ -->
-                <div class="form-group">
-                    <label>Nom (UZ)</label>
-                    <input type="text" id="p_title_uz" class="glass-input">
-                </div>
-                <div class="form-group">
-                    <label>Tavsif (UZ)</label>
-                    <textarea id="p_desc_uz" class="glass-input"></textarea>
-                </div>
-                <!-- EN -->
-                <div class="form-group">
-                    <label>Nom (EN)</label>
-                    <input type="text" id="p_title_en" class="glass-input">
-                </div>
-                <div class="form-group">
-                    <label>Tavsif (EN)</label>
-                    <textarea id="p_desc_en" class="glass-input"></textarea>
-                </div>
-                <!-- RU -->
-                <div class="form-group">
-                    <label>Nom (RU)</label>
-                    <input type="text" id="p_title_ru" class="glass-input">
-                </div>
-                <div class="form-group">
-                    <label>Tavsif (RU)</label>
-                    <textarea id="p_desc_ru" class="glass-input"></textarea>
-                </div>
-                
-                <div class="form-group full-width">
-                    <label>Texnologiyalar (vergul bilan ajrating)</label>
-                    <input type="text" id="p_tags" class="glass-input">
-                </div>
+        <div class="admin-modal delta-dark-card" style="max-width: 600px; text-align: left;">
+            <h3 id="project-modal-title" class="delta-title" style="margin-bottom: 20px;">Loyiha Qo'shish</h3>
+            
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Nomi (O'zbekcha)</label>
+                <input type="text" id="p_title_uz" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px;">
             </div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="document.getElementById('project-modal').style.display='none'">Bekor qilish</button>
-                <button class="btn btn-primary" id="save-project-btn">Saqlash</button>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Tavsif (O'zbekcha)</label>
+                <textarea id="p_desc_uz" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px; height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Nomi (Inglizcha)</label>
+                <input type="text" id="p_title_en" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px;">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Tavsif (Inglizcha)</label>
+                <textarea id="p_desc_en" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px; height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Nomi (Ruscha)</label>
+                <input type="text" id="p_title_ru" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px;">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Tavsif (Ruscha)</label>
+                <textarea id="p_desc_ru" class="form-control" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px; height: 80px;"></textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Texnologiyalar (vergul bilan ajrating)</label>
+                <input type="text" id="p_tags" class="form-control" placeholder="React, Node.js, ..." style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px;">
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label style="color: #9ca3af; display: block; margin-bottom: 5px;">Demo URL (ixtiyoriy)</label>
+                <input type="url" id="p_demo" class="form-control" placeholder="https://..." style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px;">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" onclick="document.getElementById('project-modal').style.display='none'" style="padding: 10px 15px; background: transparent; color: #9ca3af; border: 1px solid #374151; border-radius: 6px; cursor: pointer;">Bekor qilish</button>
+                <button class="btn btn-primary" id="save-project-btn" style="padding: 10px 20px; background: #0ea5e9; color: white; border: none; border-radius: 6px; cursor: pointer;">Saqlash</button>
             </div>
         </div>
     </div>

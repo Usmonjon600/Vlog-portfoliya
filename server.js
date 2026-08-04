@@ -38,6 +38,46 @@ app.post('/api/login', (req, res) => {
     }
 });
 
+// Sayt kontentini saqlash endpointi (Live Editor)
+app.post('/api/save-content', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || authHeader !== 'Bearer admin-token-12345') {
+            return res.status(401).json({ success: false, message: "Ruxsat etilmagan" });
+        }
+        
+        const { config_data } = req.body;
+        
+        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseKey = process.env.SUPABASE_KEY;
+        const secret = process.env.ADMIN_PASSWORD || '0123';
+        
+        // Supabase RPC chaqiruvi (update_site_content funksiyasi SQL orqali yaratilgan)
+        const response = await fetch(`${supabaseUrl}/rest/v1/rpc/update_site_content`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': supabaseKey,
+                'Authorization': `Bearer ${supabaseKey}`
+            },
+            body: JSON.stringify({
+                new_data: config_data,
+                secret: secret
+            })
+        });
+        
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText);
+        }
+        
+        res.json({ success: true });
+    } catch (e) {
+        console.error("Save content xatosi:", e);
+        res.status(500).json({ success: false, message: e.message });
+    }
+});
+
 // Telegram ga yuborish funksiyasi
 async function sendToTelegram(message) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
