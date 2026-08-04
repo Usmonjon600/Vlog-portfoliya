@@ -69,7 +69,12 @@ const staticTranslations = {
         contactMessageLabel: "Xabaringiz",
         contactMessagePlaceholder: "Xabaringizni yozing...",
         contactSubmitBtn: "Xabarni yuborish",
-        contactSuccessMsg: "Xabar muvaffaqiyatli yuborildi! 🎉"
+        contactSuccessMsg: "Xabar muvaffaqiyatli yuborildi! 🎉",
+        navLogoText: "Loyiha",
+        heroName: "Sodiqov Usmonjon",
+        contactEmailVal: "usmonjonsadikov9@gmail.com",
+        contactTelegramVal: "@Usmonjon_2013",
+        contactPhoneVal: "+998 97 937 01 23"
     },
     en: {
         heroGreeting: "Hello, I'm",
@@ -128,7 +133,12 @@ const staticTranslations = {
         contactMessageLabel: "Your Message",
         contactMessagePlaceholder: "Write your message here...",
         contactSubmitBtn: "Send Message",
-        contactSuccessMsg: "Message sent successfully! 🎉"
+        contactSuccessMsg: "Message sent successfully! 🎉",
+        navLogoText: "Project",
+        heroName: "Sodiqov Usmonjon",
+        contactEmailVal: "usmonjonsadikov9@gmail.com",
+        contactTelegramVal: "@Usmonjon_2013",
+        contactPhoneVal: "+998 97 937 01 23"
     },
     ru: {
         heroGreeting: "Привет, я",
@@ -186,9 +196,14 @@ const staticTranslations = {
         contactSubjectLabel: "Тема",
         contactSubjectPlaceholder: "Тема сообщения",
         contactMessageLabel: "Ваше сообщение",
-        contactMessagePlaceholder: "Напишите ваше сообщение здесь...",
+        contactMessagePlaceholder: "Напишите ваше сообщение...",
         contactSubmitBtn: "Отправить сообщение",
-        contactSuccessMsg: "Сообщение успешно отправлено! 🎉"
+        contactSuccessMsg: "Сообщение успешно отправлено! 🎉",
+        navLogoText: "Проект",
+        heroName: "Содиков Усмонжон",
+        contactEmailVal: "usmonjonsadikov9@gmail.com",
+        contactTelegramVal: "@Usmonjon_2013",
+        contactPhoneVal: "+998 97 937 01 23"
     }
 };
 
@@ -268,6 +283,20 @@ function updateLanguage(lang) {
                     el.placeholder = texts[key];
                 } else {
                     el.innerHTML = texts[key];
+                    
+                    // Agar havola (A) bo'lsa va bu kontaktlar bo'lsa, ularning href-larini ham yangilaymiz
+                    if (el.tagName === 'A') {
+                        if (key === 'contactEmailVal') {
+                            el.href = `mailto:${texts[key].trim()}`;
+                        } else if (key === 'contactTelegramVal') {
+                            let val = texts[key].trim();
+                            if(val.startsWith('@')) val = val.substring(1);
+                            el.href = `https://t.me/${val}`;
+                        } else if (key === 'contactPhoneVal') {
+                            let val = texts[key].replace(/[^0-9+]/g, '');
+                            el.href = `tel:${val}`;
+                        }
+                    }
                 }
             }
         });
