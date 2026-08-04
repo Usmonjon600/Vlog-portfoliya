@@ -157,13 +157,15 @@
         if (!document.querySelector('.add-new-project-card')) {
             const addCard = document.createElement('div');
             addCard.className = 'glass-card project-card add-new-project-card tilt-card';
-            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:300px; cursor:pointer;">
                 <div style="font-size:3rem; color:#0ea5e9; font-weight:bold;">+</div>
                 <h3 style="margin-top:15px; color:#fff;">Yangi Loyiha</h3>
             </div>`;
-            addCard.onclick = () => {
+            addCard.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 sendToParent('openProjectModal', { id: null });
-            };
+            }, true);
             projectsGrid.appendChild(addCard);
         }
 
@@ -176,20 +178,20 @@
             const editBtn = document.createElement('button');
             editBtn.className = 'project-edit-btn';
             editBtn.innerText = '✏️ Edit';
-            editBtn.onclick = (e) => {
+            editBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 sendToParent('openProjectModal', { id: projectId });
-            };
+            }, true);
             
             const delBtn = document.createElement('button');
             delBtn.className = 'project-delete-btn';
             delBtn.innerText = '🗑️';
-            delBtn.onclick = (e) => {
+            delBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 sendToParent('deleteProject', { id: projectId });
-            };
+            }, true);
 
             card.appendChild(editBtn);
             card.appendChild(delBtn);
@@ -209,9 +211,11 @@
                 <div style="font-size:3rem; color:#0ea5e9; font-weight:bold;">+</div>
                 <h3 style="margin-top:15px; color:#fff;">Yangi Xizmat</h3>
             </div>`;
-            addCard.onclick = () => {
+            addCard.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 sendToParent('openServiceModal', { id: null });
-            };
+            }, true);
             portfolioGrid.appendChild(addCard);
         }
 
@@ -232,20 +236,20 @@
             const editBtn = document.createElement('button');
             editBtn.className = 'project-edit-btn';
             editBtn.innerText = '✏️ Edit';
-            editBtn.onclick = (e) => {
+            editBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 sendToParent('openServiceModal', { id: serviceId });
-            };
+            }, true);
             
             const delBtn = document.createElement('button');
             delBtn.className = 'project-delete-btn';
             delBtn.innerText = '🗑️';
-            delBtn.onclick = (e) => {
+            delBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 sendToParent('deleteService', { id: serviceId });
-            };
+            }, true);
 
             card.appendChild(editBtn);
             card.appendChild(delBtn);
