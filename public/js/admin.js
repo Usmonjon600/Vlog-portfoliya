@@ -163,7 +163,7 @@ async function initDashboard() {
     
     // Iframe src ni sozlash
     const iframe = document.getElementById('live-preview');
-    iframe.src = '/?admin=true'; // Admin rejimida ochiladi
+    iframe.src = '/?admin=true&nocache=' + Date.now(); // Admin rejimida ochiladi
 
     // Xabarlarni qabul qilish
     window.addEventListener('message', (event) => {
