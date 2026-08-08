@@ -1,4 +1,4 @@
-alert("Admin-Panel: admin-panel-v2.js script loaded successfully! Version 18");
+// Admin Dashboard Controller
 
 let editingProjectId = null;
 window.currentPin = '';
@@ -171,11 +171,11 @@ async function initDashboard() {
     window.addEventListener('message', (event) => {
         try {
             const payload = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-            alert("Admin-Panel: Raw data type: " + typeof event.data + ". Parsed source: " + (payload ? payload.source : 'none'));
+            console.log("Admin-Panel: Message received. Source:", payload ? payload.source : 'none');
             
             if (payload && payload.source === 'live-editor') {
                 const { action, data } = payload;
-                alert("Admin-Panel: Action received: " + action);
+                console.log("Admin-Panel: Action received:", action);
                 
                 if (action === 'ready') {
                     console.log("Iframe ichidagi Live Editor tayyor!");
@@ -190,7 +190,7 @@ async function initDashboard() {
                 
                 // Loyiha qo'shish/tahrirlash modalini ochish
                 if (action === 'openProjectModal') {
-                    alert("Admin-Panel: openProjectModal case ga kirdi. Modal ko'rsatish boshlanmoqda.");
+                    console.log("Admin-Panel: Showing project modal...");
                     editingProjectId = null;
                     const titleEl = document.getElementById('project-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Loyiha Qo'shish";
@@ -198,14 +198,12 @@ async function initDashboard() {
                         clearProjectForm(); 
                     } catch(e) { 
                         console.error("Error clearing project form:", e); 
-                        alert("Formani tozalashda xatolik: " + e.message); 
                     }
                     const modal = document.getElementById('project-modal');
                     if (modal) {
                         modal.style.display = 'flex';
-                        alert("Admin-Panel: project-modal display set to flex!");
                     } else {
-                        alert("Xatolik: project-modal elementi topilmadi!");
+                        console.error("Xatolik: project-modal elementi topilmadi!");
                     }
                 }
                 
@@ -216,7 +214,7 @@ async function initDashboard() {
                 
                 // Xizmat qo'shish/tahrirlash modalini ochish
                 if (action === 'openServiceModal') {
-                    alert("Admin-Panel: openServiceModal case ga kirdi.");
+                    console.log("Admin-Panel: Showing service modal...");
                     editingServiceId = null;
                     const titleEl = document.getElementById('service-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Xizmat Qo'shish";
@@ -224,14 +222,12 @@ async function initDashboard() {
                         clearServiceForm(); 
                     } catch(e) { 
                         console.error("Error clearing service form:", e); 
-                        alert("Formani tozalashda xatolik: " + e.message); 
                     }
                     const modal = document.getElementById('service-modal');
                     if (modal) {
                         modal.style.display = 'flex';
-                        alert("Admin-Panel: service-modal display set to flex!");
                     } else {
-                        alert("Xatolik: service-modal elementi topilmadi!");
+                        console.error("Xatolik: service-modal elementi topilmadi!");
                     }
                 }
                 
