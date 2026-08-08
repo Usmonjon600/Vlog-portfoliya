@@ -1,3 +1,5 @@
+alert("Admin-Panel: admin-panel-v2.js script loaded successfully! Version 17");
+
 let editingProjectId = null;
 window.currentPin = '';
 
@@ -167,6 +169,7 @@ async function initDashboard() {
 
     // Xabarlarni qabul qilish
     window.addEventListener('message', (event) => {
+        alert("Admin-Panel: Ota oyna har qanday message hodisasini eshitdi! Data: " + JSON.stringify(event.data));
         if (event.data && event.data.source === 'live-editor') {
             const { action, data } = event.data;
             
