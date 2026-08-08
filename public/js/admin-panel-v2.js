@@ -1,4 +1,4 @@
-alert("Admin-Panel: admin-panel-v2.js script loaded successfully! Version 17");
+alert("Admin-Panel: admin-panel-v2.js script loaded successfully! Version 18");
 
 let editingProjectId = null;
 window.currentPin = '';
@@ -169,74 +169,79 @@ async function initDashboard() {
 
     // Xabarlarni qabul qilish
     window.addEventListener('message', (event) => {
-        alert("Admin-Panel: Ota oyna har qanday message hodisasini eshitdi! Data: " + JSON.stringify(event.data));
-        if (event.data && event.data.source === 'live-editor') {
-            const { action, data } = event.data;
+        try {
+            const payload = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+            alert("Admin-Panel: Raw data type: " + typeof event.data + ". Parsed source: " + (payload ? payload.source : 'none'));
             
-            if (action === 'ready') {
-                console.log("Iframe ichidagi Live Editor tayyor!");
-            }
-            
-            if (action === 'updateTranslation') {
-                const { lang, key, value } = data;
-                if (!modifiedContent[lang]) modifiedContent[lang] = {};
-                modifiedContent[lang][key] = value;
-                console.log("O'zgarish saqlandi:", modifiedContent);
-            }
-            
-            // Loyiha qo'shish/tahrirlash modalini ochish
-            if (action === 'openProjectModal') {
-                alert("Admin-Panel: Ota oyna xabarni oldi! Endi modal ochilishi kerak.");
-                console.log("Admin.js: openProjectModal received with data:", data);
-                if (data.id) {
-                    editProject(data.id);
-                } else {
+            if (payload && payload.source === 'live-editor') {
+                const { action, data } = payload;
+                alert("Admin-Panel: Action received: " + action);
+                
+                if (action === 'ready') {
+                    console.log("Iframe ichidagi Live Editor tayyor!");
+                }
+                
+                if (action === 'updateTranslation') {
+                    const { lang, key, value } = data;
+                    if (!modifiedContent[lang]) modifiedContent[lang] = {};
+                    modifiedContent[lang][key] = value;
+                    console.log("O'zgarish saqlandi:", modifiedContent);
+                }
+                
+                // Loyiha qo'shish/tahrirlash modalini ochish
+                if (action === 'openProjectModal') {
+                    alert("Admin-Panel: openProjectModal case ga kirdi. Modal ko'rsatish boshlanmoqda.");
                     editingProjectId = null;
                     const titleEl = document.getElementById('project-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Loyiha Qo'shish";
-                    try { clearProjectForm(); } catch(e) { console.error("Error clearing project form:", e); alert("Formani tozalashda xatolik: " + e.message); }
+                    try { 
+                        clearProjectForm(); 
+                    } catch(e) { 
+                        console.error("Error clearing project form:", e); 
+                        alert("Formani tozalashda xatolik: " + e.message); 
+                    }
                     const modal = document.getElementById('project-modal');
                     if (modal) {
                         modal.style.display = 'flex';
-                        console.log("Admin.js: project-modal display set to flex");
+                        alert("Admin-Panel: project-modal display set to flex!");
                     } else {
-                        console.error("Admin.js: project-modal element NOT FOUND!");
                         alert("Xatolik: project-modal elementi topilmadi!");
                     }
                 }
-            }
-            
-            // Loyihani o'chirish
-            if (action === 'deleteProject') {
-                deleteProject(data.id);
-            }
-            
-            // Xizmat qo'shish/tahrirlash modalini ochish
-            if (action === 'openServiceModal') {
-                alert("Admin-Panel: Ota oyna Xizmat xabarini oldi!");
-                console.log("Admin.js: openServiceModal received with data:", data);
-                if (data.id) {
-                    editService(data.id);
-                } else {
+                
+                // Loyihani o'chirish
+                if (action === 'deleteProject') {
+                    deleteProject(data.id);
+                }
+                
+                // Xizmat qo'shish/tahrirlash modalini ochish
+                if (action === 'openServiceModal') {
+                    alert("Admin-Panel: openServiceModal case ga kirdi.");
                     editingServiceId = null;
                     const titleEl = document.getElementById('service-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Xizmat Qo'shish";
-                    try { clearServiceForm(); } catch(e) { console.error("Error clearing service form:", e); alert("Formani tozalashda xatolik: " + e.message); }
+                    try { 
+                        clearServiceForm(); 
+                    } catch(e) { 
+                        console.error("Error clearing service form:", e); 
+                        alert("Formani tozalashda xatolik: " + e.message); 
+                    }
                     const modal = document.getElementById('service-modal');
                     if (modal) {
                         modal.style.display = 'flex';
-                        console.log("Admin.js: service-modal display set to flex");
+                        alert("Admin-Panel: service-modal display set to flex!");
                     } else {
-                        console.error("Admin.js: service-modal element NOT FOUND!");
                         alert("Xatolik: service-modal elementi topilmadi!");
                     }
                 }
+                
+                // Xizmatni o'chirish
+                if (action === 'deleteService') {
+                    deleteService(data.id);
+                }
             }
-            
-            // Xizmatni o'chirish
-            if (action === 'deleteService') {
-                deleteService(data.id);
-            }
+        } catch (globalErr) {
+            alert("MESSAGE HANDLER GLOBAL CRASH: " + globalErr.message + "\nStack: " + globalErr.stack);
         }
     });
 
