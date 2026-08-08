@@ -157,15 +157,10 @@
         if (!document.querySelector('.add-new-project-card')) {
             const addCard = document.createElement('div');
             addCard.className = 'glass-card project-card add-new-project-card tilt-card';
-            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:300px; cursor:pointer;">
-                <div style="font-size:3rem; color:#0ea5e9; font-weight:bold;">+</div>
-                <h3 style="margin-top:15px; color:#fff;">Yangi Loyiha</h3>
+            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; width:100%; min-height:300px; cursor:pointer;" onclick="window.parent.postMessage({ source: 'live-editor', action: 'openProjectModal', data: { id: null } }, '*');">
+                <div style="font-size:4rem; color:#0ea5e9; font-weight:bold; pointer-events:none;">+</div>
+                <h3 style="margin-top:15px; color:#fff; pointer-events:none;">YANGI LOYIHA QO'SHISH</h3>
             </div>`;
-            addCard.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                sendToParent('openProjectModal', { id: null });
-            }, true);
             projectsGrid.appendChild(addCard);
         }
 
@@ -207,15 +202,10 @@
         if (!document.querySelector('.add-new-service-card')) {
             const addCard = document.createElement('div');
             addCard.className = 'card glass-container add-new-service-card tilt-card';
-            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:300px; cursor:pointer;">
-                <div style="font-size:3rem; color:#0ea5e9; font-weight:bold;">+</div>
-                <h3 style="margin-top:15px; color:#fff;">Yangi Xizmat</h3>
+            addCard.innerHTML = `<div class="tilt-card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; width:100%; min-height:300px; cursor:pointer;" onclick="window.parent.postMessage({ source: 'live-editor', action: 'openServiceModal', data: { id: null } }, '*');">
+                <div style="font-size:4rem; color:#0ea5e9; font-weight:bold; pointer-events:none;">+</div>
+                <h3 style="margin-top:15px; color:#fff; pointer-events:none;">YANGI XIZMAT QO'SHISH</h3>
             </div>`;
-            addCard.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                sendToParent('openServiceModal', { id: null });
-            }, true);
             portfolioGrid.appendChild(addCard);
         }
 
