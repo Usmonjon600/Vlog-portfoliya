@@ -183,6 +183,7 @@ async function initDashboard() {
             
             // Loyiha qo'shish/tahrirlash modalini ochish
             if (action === 'openProjectModal') {
+                alert("Admin-Panel: Ota oyna xabarni oldi! Endi modal ochilishi kerak.");
                 console.log("Admin.js: openProjectModal received with data:", data);
                 if (data.id) {
                     editProject(data.id);
@@ -190,13 +191,14 @@ async function initDashboard() {
                     editingProjectId = null;
                     const titleEl = document.getElementById('project-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Loyiha Qo'shish";
-                    try { clearProjectForm(); } catch(e) { console.error("Error clearing project form:", e); }
+                    try { clearProjectForm(); } catch(e) { console.error("Error clearing project form:", e); alert("Formani tozalashda xatolik: " + e.message); }
                     const modal = document.getElementById('project-modal');
                     if (modal) {
                         modal.style.display = 'flex';
                         console.log("Admin.js: project-modal display set to flex");
                     } else {
                         console.error("Admin.js: project-modal element NOT FOUND!");
+                        alert("Xatolik: project-modal elementi topilmadi!");
                     }
                 }
             }
@@ -208,6 +210,7 @@ async function initDashboard() {
             
             // Xizmat qo'shish/tahrirlash modalini ochish
             if (action === 'openServiceModal') {
+                alert("Admin-Panel: Ota oyna Xizmat xabarini oldi!");
                 console.log("Admin.js: openServiceModal received with data:", data);
                 if (data.id) {
                     editService(data.id);
@@ -215,13 +218,14 @@ async function initDashboard() {
                     editingServiceId = null;
                     const titleEl = document.getElementById('service-modal-title');
                     if (titleEl) titleEl.innerText = "Yangi Xizmat Qo'shish";
-                    try { clearServiceForm(); } catch(e) { console.error("Error clearing service form:", e); }
+                    try { clearServiceForm(); } catch(e) { console.error("Error clearing service form:", e); alert("Formani tozalashda xatolik: " + e.message); }
                     const modal = document.getElementById('service-modal');
                     if (modal) {
                         modal.style.display = 'flex';
                         console.log("Admin.js: service-modal display set to flex");
                     } else {
                         console.error("Admin.js: service-modal element NOT FOUND!");
+                        alert("Xatolik: service-modal elementi topilmadi!");
                     }
                 }
             }
